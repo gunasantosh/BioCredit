@@ -1,0 +1,145 @@
+{% extends 'base.html' %} {% block title %}Register {% endblock %} {% block
+content%} {% with messages = get_flashed_messages(with_categories=true) %} {% if
+messages %}
+<!-- JavaScript code to display the flash messages -->
+<script>
+  // Function to display the flash messages
+  function displayFlashMessage(category, message) {
+    var modal = document.getElementById('flash-modal');
+    modal.innerHTML = message;
+    modal.className = 'modal ' + category;
+    var overlay = document.getElementById('flash-modal-overlay');
+    overlay.style.display = 'flex';
+
+    // Close the modal after 3 seconds
+    setTimeout(function() {
+      overlay.style.display = 'none';
+    }, 3000);
+  }
+
+  // Loop through the flashed messages and display them
+  {% for category, message in messages %}
+  displayFlashMessage('{{ category }}', '{{ message }}');
+  {% endfor %}
+</script>
+{% endif %} {% endwith %}
+
+<div class="container-1">
+  <div class="register-box">
+    <h2>Registration</h2>
+    <form id="reg-form" method="POST">
+      <div class="user-box">
+        <input type="text" name="username" required="" autocomplete="off" />
+        <label>Username :</label>
+      </div>
+      <div class="user-box">
+        <input type="text" name="name" required="" autocomplete="off" />
+        <label>Name :</label>
+      </div>
+      <div class="user-box">
+        <input type="text" name="address" required="" autocomplete="off" />
+        <label>Address :</label>
+      </div>
+      <input type="hidden" id="lat" name="latitude" required />
+      <input type="hidden" id="long" name="longitude" required />
+      <input type="hidden" id="user_role" name="user_role" />
+      <div class="user-box">
+        <input type="password" name="password1" required="" />
+        <label>Password :</label>
+      </div>
+      <div class="user-box">
+        <input type="password" name="password2" required="" />
+        <label>Confirm Password :</label>
+      </div>
+      <div class="user-box" id="check-box">
+        <input type="checkbox" id="check" name="accept" required="" />
+        <p>
+          As we are capturing your Meter Location, Register Your Account While
+          Standing near the Biogas Meter & Accept Geolocation Permission
+        </p>
+      </div>
+
+      <button
+        id="org-submit"
+        type="submit"
+        style="display: none"
+        class="register-btn"
+      >
+        Register
+      </button>
+    </form>
+    <button id="submit-btn" disabled>Register</button>
+  </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+  var role = document.getElementById("user_role");
+  var submitbtn = document.getElementById("submit-btn");
+
+  role.value = "user";
+
+  $(document).ready(() => {
+    var check = document.getElementById("check");
+    check.addEventListener("change", function (event) {
+      if (event.target.checked === true) {
+        $("#submit-btn").prop("disabled", false);
+      } else {
+        $("#submit-btn").prop("disabled", true);
+      }
+    });
+  });
+  submitbtn.addEventListener("click", function (event) {
+    var form = document.getElementById("reg-form");
+    if (!form.checkValidity()) {
+      var resetsbtn = document.getElementById("org-submit");
+      resetsbtn.click();
+    } else {
+      var latitude = $("#lat").val();
+      var longitude = $("#long").val();
+      if (latitude !== "" && longitude !== "") {
+        var resetsbtn = document.getElementById("org-submit");
+        resetsbtn.click();
+      } else {
+        getLocation();
+        if ($("#lat").val() !== "" && $("#long").val() !== "") {
+        }
+      }
+    }
+  });
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  function showPosition(position) {
+    $("#lat").val(position.coords.latitude);
+    $("#long").val(position.coords.longitude);
+    console.log("Location Captured");
+    var resetsbtn = document.getElementById("org-submit");
+    resetsbtn.click();
+  }
+
+  function showError(error) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        alert("User denied the request for Geolocation.");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        alert("Location information is unavailable.");
+        break;
+      case error.TIMEOUT:
+        alert("The request to get user location timed out.");
+        break;
+      case error.UNKNOWN_ERROR:
+        alert("An unknown error occurred.");
+        break;
+    }
+  }
+</script>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% block title %} Dashboard {% endblock title %} {%
+block additional_nav %} {% if role == 'superuser' %}
+<li id="dropdown_">
+  <label for="username">Choose user:</label>
+  <select name="username" id="username">
+    {% for user in user_list %}
+    <option value="{{ user.username }}">{{ user.username }}</option>
+    {% endfor %}
+  </select>
+</li>
+{% endif %} {% endblock additional_nav %} {% block content %}
+<h1>Webcam Capture</h1>
+<h2>{{ msg }}</h2>
+<label for="image">Capture Image:</label>
+<div id="cameraContainer">
+  <video id="cameraPreview" autoplay></video>
+</div>
+<button id="captureBtn">Capture Image</button>
+<button id="retakeBtn" style="display: none">Retake</button>
+<canvas id="imageCanvas" style="display: none"></canvas>
+<form action="/process_form" method="post" enctype="multipart/form-data">
+  <br /><br />
+  <label for="reading">Enter Reading:</label>
+  <input type="text" name="reading" id="reading" autocomplete="off" />
+  <input type="hidden" name="imgurl" id="captured_image" />
+
+  <input type="hidden" name="selectedUser" id="selectedUser" value="" />
+  <br /><br />
+  <input type="submit" value="Submit" />
+</form>
+
+<script src="{{ url_for('static', filename='webcam_capture.js') }}"></script>
+<script>
+  const usernameSelect = document.getElementById("username");
+  const selectedUserInput = document.getElementById("selectedUser");
+
+  usernameSelect.addEventListener("change", function () {
+    selectedUserInput.value = this.value;
+  });
+</script>
+{% endblock content %}
