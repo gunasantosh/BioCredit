@@ -3,6 +3,9 @@ from flask import render_template, jsonify, request
 from flask_login import login_required, current_user
 from .models import User
 import mysql.connector
+from mysql.connector import errors
+from datetime import datetime
+
 
 views = Blueprint("views", __name__)
 
@@ -44,13 +47,23 @@ def dashboard():
 def process_form():
     meter_reading = request.form.get("reading")
     image = request.form.get("imgurl")
-    username = request.form.get("selectedUser")
+    if(current_user.role=='superuser'):
+        username = request.form.get("selectedUser")
+    else:
+        username = current_user.username
+    
     print(request.form.get("imgurl"))
     if meter_reading:
-        query = "INSERT INTO captured_image (meter_reading, image, username) VALUES ('{}','{}','{}')".format(
-            meter_reading, image, username
-        )
-        cursor.execute(query)
-        con.commit()
-        return render_template("dashboard.html", msg="Meter reading Submitted !!")
+        today=datetime.today().strftime('%Y-%m-%d')
+        msg=''
+        try:
+            query = "INSERT INTO readings (meter_reading,date, image, username) VALUES ('{}','{}','{}','{}')".format(
+                meter_reading,today, image, username
+            )
+            cursor.execute(query)
+            con.commit()
+            msg="Meter reading Submitted Sucessfully!!"
+        except errors.IntegrityError as e:
+            msg="Meter reading Submission Failed,\n As Todays Meter reading is already Submitted !!"
+        return render_template("dashboard.html", msg=msg)
     return render_template("dashboard.html")
