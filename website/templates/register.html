@@ -1,6 +1,11 @@
 {% extends 'base.html' %} {% block title %}Register {% endblock %} {% block
 content%} {% with messages = get_flashed_messages(with_categories=true) %} {% if
 messages %}
+
+<div id="flash-modal-overlay" class="modal-overlay">
+  <div id="flash-modal" class="modal"></div>
+</div>
+
 <!-- JavaScript code to display the flash messages -->
 <script>
   // Function to display the flash messages

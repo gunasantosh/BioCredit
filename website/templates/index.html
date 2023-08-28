@@ -1,6 +1,48 @@
-{% extends 'base.html' %} {% block title %}Home {% endblock %} {% block content
-%}
-<h1>Home Page</h1>
-<a href="{{ url_for('auth.login')}}"> Login </a>
-<a href="{{ url_for('auth.register')}}">Register</a>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GS Co</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles/index.css') }}">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="#" alt="Logo">
+  </div>
+  <div class="container">
+    <a href="#">Home</a>
+    <a href="#">About Us</a>
+    <a href="#">Contact us</a>
+  </div>
+</header>
+
+<main>
+    <section id="home">
+      <h1>FRICTIONLESS UPLOAD & RETRIEVAL</h1>
+      <div class="home-container">
+        <div class="video-container">
+          <video width="100%" autoplay loop muted playsinline disableremoteplayback>
+            <source src="{{ url_for('static', filename='styles/vid1.mp4') }}" type="video/mp4">
+            <source src="{{ url_for('static', filename='styles/vid1.webm') }}" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <p>Suku provides intuitive decentralized tools, allowing everyday users and creators to unlock the full potential of Web3, hassle-free.</p>
+      </div>
+    </section>
+    <section id="about">
+      
+    </section>
+  </main>
+
+<footer>
+  <div class="container">
+    <p>Copyright &copy; 2023 Suku. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
