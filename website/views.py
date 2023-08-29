@@ -11,7 +11,7 @@ from geopy.distance import geodesic
 views = Blueprint("views", __name__)
 
 con = mysql.connector.connect(
-    host="localhost", user="root", password="mypassword", database="dapp"
+    host="localhost", user="root", password="", database="dapp"
 )
 cursor = con.cursor(buffered=True)
 
@@ -74,7 +74,7 @@ def process_form():
     
     print(current_location)
     print(user_location)
-    distance=geodesic(current_location,user_location).m
+    distance=geodesic(current_location,user_location)
     print(distance)
     if(distance<=(float(accuracy)+float(user_accuracy)+200)):
         today=datetime.today().strftime('%Y-%m-%d')

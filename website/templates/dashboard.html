@@ -1,6 +1,14 @@
 {% extends 'base2.html' %} {% block title %} Dashboard {% endblock title %} {%
-block content %}
-
+block content %} ======= block additional_nav %} {% if role == 'superuser' %}
+<li id="dropdown_">
+  <label for="username">Choose user:</label>
+  <select name="username" id="username">
+    {% for user in user_list %}
+    <option value="{{ user.username }}">{{ user.username }}</option>
+    {% endfor %}
+  </select>
+</li>
+{% endif %} {% endblock additional_nav %} {% block content %}
 <h1>Webcam Capture</h1>
 <h2>{{ msg }}</h2>
 <label for="image">Capture Image:</label>
@@ -14,7 +22,7 @@ block content %}
   Capture Image
 </button>
 <canvas id="imageCanvas" style="display: none"></canvas>
-
+>>>>>>> origin/branch2
 <form
   id="user-form"
   action="/process_form"
