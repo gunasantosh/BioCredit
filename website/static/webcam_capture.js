@@ -12,7 +12,9 @@ const camstat = 0;
 let stream;
 
 async function startCamera() {
-    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    stream = await navigator.mediaDevices.getUserMedia({ video: {
+    facingMode: "environment"
+  } });
     cameraPreview.srcObject = stream;
 }
 

@@ -11,6 +11,7 @@ class User(db.Model,UserMixin):
     address = Column(db.String(200), nullable=False)
     latitude = Column(db.String(200), nullable=False)
     longitude = Column(db.String(200), nullable=False)
+    accuracy = Column(db.String(30),nullable=False)
     role = Column(db.String(50), nullable=False)
     password = Column(db.String(150), nullable=False)
 

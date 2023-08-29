@@ -15,6 +15,7 @@ def register():
         address = request.form.get("address")
         latitude = request.form.get("latitude")
         longitude = request.form.get("longitude")
+        accuracy = request.form.get("accuracy")
         role = request.form.get("user_role")
         password1 = request.form.get("password1")
         password2 = request.form.get("password2")
@@ -24,7 +25,7 @@ def register():
         if existing_user:
             flash("Username already exists. Please choose a different username.", category="error")
         elif username and len(username.strip()) >= 4 and password1 and len(password1) >= 7 and password1 == password2 and username.isalnum():
-            user = User(username=username, name=name, address=address, latitude=latitude, longitude=longitude,role=role,password=generate_password_hash(password1, method='sha256') )  
+            user = User(username=username, name=name, address=address, latitude=latitude, longitude=longitude,accuracy=accuracy,role=role,password=generate_password_hash(password1, method='sha256') )  
             db.session.add(user)
             db.session.commit()
             flash("Account created successfully!", category="success")
