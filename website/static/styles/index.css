@@ -1,72 +1,223 @@
-* {
-    margin: 0;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
 }
 
-header {
-    background-color: rgba(255, 255, 255, 0.7);
-    position: sticky;
+body{
+    background: linear-gradient(180deg,#01FE43,#53c044);
+}
+
+header nav{
     display: flex;
-    top: 0;
-    z-index: 100;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 0;
-}
-
-.container a {
-    text-decoration: none;
-    color: rgb(200, 200, 200);
-    padding: 10px 20px;
-}
-
-.container a:hover {
-    color: rgb(130, 130, 130);
-    border-radius: 5px;
-}
-
-header img {
-    padding: 10px 10px;
-}
-
-/*-------------Home Section-----------*/
-
-#home {
-    background-color: #f0f0f0;
-    padding: 100px 0;
-    text-align: center;
-}
-
-#home h1 {
-    font-size: 48px;
-    background: linear-gradient(135deg, #00c500, #333333);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.home-container {
-    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: black;
+    box-shadow: 2px 0px 10px black;
 }
 
-.video-container {
-    flex: 1;
-    max-width: 50px;
+nav .menu{
+    background-color: transparent;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    box-shadow: 1px 1px 5px rgb(121, 112, 112);
 }
 
-p{
+nav .menu ul li {
+    list-style: none;
+    display: inline-block;
+}
+
+nav .menu ul li a{
+    color: #ffffff;
+    text-decoration: none;
+    padding: 5px 10px;
+    margin-left: 25px;
+}
+
+nav .logo h1{
+    color: #ffffff;
+}
+
+nav .register .register-btn{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    margin-left: 10px;
+}
+
+nav .register a{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    margin-left: 10px;
+    background-color: #ffffff;
+    text-decoration: none;
+}
+
+.register .register-btn{
+    color: #ffffff;
+    background: linear-gradient(200deg,#01FE43,#333333);
+}
+
+.home{
+    padding-top: 100px ;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-inline: 20px;
+}
+
+.home .block-chain{
+    flex: 4;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.home .blockchain-img{
     flex: 1;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.block-chain h1{
+    font-size: 50px;
+}
+
+.algo{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: 30px;
+    margin-top: 40px;
+}
+
+.algo-paragraph p{
+    font-size: 20px;
+}
+
+.algo-paragraph{
+    justify-content: flex-start;
+    padding: 10px 10px;
+
+}
+
+.algo-logo{
+    justify-content: center;
+}
+
+.block-chain ul li{
+    margin-top: 16px;
+    margin-left: 23px;
+}
+
+.algo-paragraph h2,p{
+    margin-top: 20px;
+}
+
+footer .footer{
+    background-color: black;
+    color:#01FE43;
+    text-align: center;
+    padding: 20px 40px;
+    margin-top: 80px;
+}
+
+.algo-paragraph ul li{
+    margin-top: 20px;
     margin-left: 20px;
+}
+
+.algo-paragraph h1{
+    font-size: 50px;
+}
+
+.active{
+    border-bottom: 1px solid white;
+}
+
+.hamburger-menu{
+    display: none;
+}
+
+@media screen and (width <= 500px) {
+
+    .menu{
+        display: none;
+    }
+    .register{
+        display: none;
+    }
+
+    .hamburger-menu{
+        display: block;
+    }
+    
+    .home{
+        padding-top:  80px ;
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        padding-inline: 20px;
+    }
+
+    .algo{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding-inline: 30px;
+        margin-top: 40px;
+    }
+
+    .block-chain h1{
+        font-size: 33px;
+    }
+
+    .block-chain ul li{
+        font-size: 15px;
+        margin-top: 10px;
+    }
+
+    .blockchain-img img{
+        width: 100%;
+    }
+
+    .algo-logo img{
+        width: 100%;
+    }
+
+    .algo-paragraph ul li{
+        margin-top: 10px;
+        font-size: 16px;
+    }
+    
+    .algo-paragraph h1{
+        font-size: 33px;
+    }
+
+    .algo-paragraph h2,p{
+        margin-top: 10px;
+
+    }
+
+    .algo-paragraph h2{
+        font-size: 18px;
+    }
+
+    footer .footer{
+        margin-top: 30px;
+    }
+
 }

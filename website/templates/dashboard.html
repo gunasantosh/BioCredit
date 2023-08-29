@@ -12,11 +12,22 @@ block additional_nav %} {% if role == 'superuser' %}
 <h1>Webcam Capture</h1>
 <h2>{{ msg }}</h2>
 <label for="image">Capture Image:</label>
-<button id="modalopen" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+<button
+  id="modalopen"
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#staticBackdrop"
+>
   Capture Image
 </button>
 <canvas id="imageCanvas" style="display: none"></canvas>
-<form id='user-form' action="/process_form" method="post" enctype="multipart/form-data">
+<form
+  id="user-form"
+  action="/process_form"
+  method="post"
+  enctype="multipart/form-data"
+>
   <br /><br />
   <label for="reading">Enter Reading:</label>
   <input type="text" name="reading" id="reading" autocomplete="off" />
@@ -24,27 +35,52 @@ block additional_nav %} {% if role == 'superuser' %}
 
   <input type="hidden" name="selectedUser" id="selectedUser" value="" />
   <br /><br />
-  <input id="org-sub" style="display: none;" type="submit" value="Submit" />
+  <input id="org-sub" style="display: none" type="submit" value="Submit" />
 </form>
 <button class="btn btn-primary" id="dup-sub">Submit</button>
 
-<div class="modal fade" id="staticBackdrop"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-fullscreen modal-dialog-centered modal-dialog-scrollable" >
-    <div class="modal-content" style="background-color: #030a20;">
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-fullscreen modal-dialog-centered modal-dialog-scrollable"
+  >
+    <div class="modal-content" style="background-color: #030a20">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-        <button type="button btn btn-light" id="close-up" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button btn btn-light"
+          id="close-up"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-        <div style="margin: auto;" id="cameraContainer">
-          <video id="cameraPreview" style="display: block;" autoplay></video>
+        <div style="margin: auto" id="cameraContainer">
+          <video id="cameraPreview" style="display: block" autoplay></video>
         </div>
         <canvas id="imageCanvas2" style="display: none"></canvas>
       </div>
       <div class="modal-footer">
         <button id="captureBtn" class="btn btn-light">Capture Image</button>
-        <button id="retakeBtn" class="btn btn-light" style="display: none">Retake</button>
-        <button type="button" id="close-bottom" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button id="retakeBtn" class="btn btn-light" style="display: none">
+          Retake
+        </button>
+        <button
+          type="button"
+          id="close-bottom"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
       </div>
     </div>
   </div>
@@ -52,42 +88,42 @@ block additional_nav %} {% if role == 'superuser' %}
 
 <script src="{{ url_for('static', filename='webcam_capture.js') }}"></script>
 <script>
-  const usernameSelect = document.getElementById("username");
-  const selectedUserInput = document.getElementById("selectedUser");
-  const org_btn=document.getElementById('org-sub');
-  const dup_btn=document.getElementById('dup-sub');
+    const usernameSelect = document.getElementById("username");
+    const selectedUserInput = document.getElementById("selectedUser");
+    const org_btn=document.getElementById('org-sub');
+    const dup_btn=document.getElementById('dup-sub');
 
 
-  if(usernameSelect){
-  usernameSelect.addEventListener("change", function () {
-    selectedUserInput.value = this.value;
-  });
-}
+    if(usernameSelect){
+    usernameSelect.addEventListener("change", function () {
+      selectedUserInput.value = this.value;
+    });
+  }
 
-  dup_btn.addEventListener('click',function(event){
-    {% if role == 'superuser' %}
-      var selecteduser=document.getElementById('selectedUser');
-      if(!selecteduser.value){
-        selecteduser.focus();
-        alert('Select a Valid User.!!');
-        return;
-      }
-    {% endif %}
-    var captured_image=document.getElementById('captured_image');
-      if(!captured_image.value){
-        captured_image.focus();
-        alert('Capture Meter Image To Submit The Form.!!');
-        return;
-      }
-      var reading=document.getElementById('reading');
-      if(!reading.value){
-        reading.focus()
-        alert('Enter Meter Reading To Submit The Form.!!');
-        return;
-      }
+    dup_btn.addEventListener('click',function(event){
+      {% if role == 'superuser' %}
+        var selecteduser=document.getElementById('selectedUser');
+        if(!selecteduser.value){
+          selecteduser.focus();
+          alert('Select a Valid User.!!');
+          return;
+        }
+      {% endif %}
+      var captured_image=document.getElementById('captured_image');
+        if(!captured_image.value){
+          captured_image.focus();
+          alert('Capture Meter Image To Submit The Form.!!');
+          return;
+        }
+        var reading=document.getElementById('reading');
+        if(!reading.value){
+          reading.focus()
+          alert('Enter Meter Reading To Submit The Form.!!');
+          return;
+        }
 
-      org_btn.click();
-    
-  });
+        org_btn.click();
+
+    });
 </script>
 {% endblock content %}
