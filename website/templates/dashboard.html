@@ -1,18 +1,6 @@
-{% extends 'base.html' %} {% block title %} Dashboard {% endblock title %} {%
-<<<<<<< HEAD
+{% extends 'base2.html' %} {% block title %} Dashboard {% endblock title %} {%
 block content %}
 
-=======
-block additional_nav %} {% if role == 'superuser' %}
-<li id="dropdown_">
-  <label for="username">Choose user:</label>
-  <select name="username" id="username">
-    {% for user in user_list %}
-    <option value="{{ user.username }}">{{ user.username }}</option>
-    {% endfor %}
-  </select>
-</li>
-{% endif %} {% endblock additional_nav %} {% block content %}
 <h1>Webcam Capture</h1>
 <h2>{{ msg }}</h2>
 <label for="image">Capture Image:</label>
@@ -26,7 +14,7 @@ block additional_nav %} {% if role == 'superuser' %}
   Capture Image
 </button>
 <canvas id="imageCanvas" style="display: none"></canvas>
->>>>>>> origin/branch2
+
 <form
   id="user-form"
   action="/process_form"
@@ -242,7 +230,7 @@ block additional_nav %} {% if role == 'superuser' %}
           type:"POST",
           contentType: 'application/json;charset=UTF-8',
           data:JSON.stringify({'reading':reading.value,'imgurl':captured_image.value,'selectedUser':selecteduser.value,'latitude':latitude,'longitude':longitude,'accuracy':accuracy}),
-          
+
           success:function(data){
             if(data.statusCode===200){
               window.location.href="http://127.0.0.1:5000/dashboard?msg="+encodeURIComponent(data.msg);
