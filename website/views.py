@@ -11,7 +11,7 @@ from geopy.distance import geodesic
 views = Blueprint("views", __name__)
 
 con = mysql.connector.connect(
-    host="localhost", user="root", password="", database="dapp"
+    host="localhost", user="root", password="mypassword", database="dapp"
 )
 cursor = con.cursor(buffered=True)
 
@@ -22,15 +22,15 @@ def home():
     return render_template("index.html")
 
 
-@views.route("/dashboard",methods=['GET','POST'])
+@views.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
-    msg=None
-    if(request.method=='GET'):
-        msg=request.args.get('msg')
+    msg = None
+    if request.method == "GET":
+        msg = request.args.get("msg")
     role = current_user.role
     user_list = User.query.filter_by(role="user").all()
-    return render_template("dashboard.html", role=role, user_list=user_list,msg=msg)
+    return render_template("dashboard.html", role=role, user_list=user_list, msg=msg)
 
 
 # @views.route('/save', methods=['POST'])
@@ -51,41 +51,57 @@ def dashboard():
 def process_form():
     meter_reading = request.json["reading"]
     image = request.json["imgurl"]
-    latitude=request.json['latitude']
-    longitude=request.json['longitude']
-    accuracy=request.json['accuracy']
-    current_location=(latitude,longitude)
-    user_latitude=current_user.latitude
-    user_longitude=current_user.longitude
-    user_location=(user_latitude,user_longitude)
-    if(current_user.role=='superuser'):
+    latitude = request.json["latitude"]
+    longitude = request.json["longitude"]
+    accuracy = request.json["accuracy"]
+    current_location = (latitude, longitude)
+    user_latitude = current_user.latitude
+    user_longitude = current_user.longitude
+    user_location = (user_latitude, user_longitude)
+    if current_user.role == "superuser":
         username = request.json["selectedUser"]
     else:
         username = current_user.username
 
     query = "SELECT * FROM user WHERE username='{}'".format(username)
     cursor.execute(query)
-    res=cursor.fetchall()
+    res = cursor.fetchall()
     print(res)
-    user_latitude=res[0][5]
-    user_longitude=res[0][6]
-    user_accuracy=res[0][7]
-    user_location=(user_latitude,user_longitude)
-    
+    user_latitude = res[0][5]
+    user_longitude = res[0][6]
+    user_accuracy = res[0][7]
+    user_location = (user_latitude, user_longitude)
+
     print(current_location)
     print(user_location)
-    distance=geodesic(current_location,user_location)
+    distance = geodesic(current_location, user_location)
     print(distance)
-    if(distance<=(float(accuracy)+float(user_accuracy)+200)):
-        today=datetime.today().strftime('%Y-%m-%d')
+    if distance <= (float(accuracy) + float(user_accuracy) + 200):
+        today = datetime.today().strftime("%Y-%m-%d")
         try:
             query = "INSERT INTO readings (meter_reading,date, image, username) VALUES ('{}','{}','{}','{}')".format(
-                meter_reading,today, image, username
+                meter_reading, today, image, username
             )
             cursor.execute(query)
             con.commit()
-            return jsonify({"statusCode":200,"msg":"Meter reading Submitted Sucessfully.!!"})
+            return jsonify(
+                {"statusCode": 200, "msg": "Meter reading Submitted Sucessfully.!!"}
+            )
         except errors.IntegrityError as e:
-            return jsonify({"statusCode":999,"msg":"Meter reading Submission Failed,\nAs Todays reading of {}'s Meter is already Submitted.!!".format(username)})
+            return jsonify(
+                {
+                    "statusCode": 999,
+                    "msg": "Meter reading Submission Failed,\nAs Todays reading of {}'s Meter is already Submitted.!!".format(
+                        username
+                    ),
+                }
+            )
     else:
-        return jsonify({"statusCode":999,"msg":"Please Submit the Form While Standing near the {}'s Meter.!!".format(username)})
+        return jsonify(
+            {
+                "statusCode": 999,
+                "msg": "Please Submit the Form While Standing near the {}'s Meter.!!".format(
+                    username
+                ),
+            }
+        )
