@@ -1,18 +1,8 @@
 {% extends 'base2.html' %} {% block title %} Dashboard {% endblock title %} {%
 block content %}
 <h1>Webcam Capture</h1>
-<h2>{{ msg }}</h2>
 <label for="image">Capture Image:</label>
-<button
-  id="modalopen"
-  type="button"
-  class="btn btn-primary"
-  data-bs-toggle="modal"
-  data-bs-target="#staticBackdrop"
->
-  Capture Image
-</button>
-<canvas id="imageCanvas" style="display: none"></canvas>
+
 <form
   id="user-form"
   action="/process_form"
@@ -159,7 +149,7 @@ block content %}
                 resolve();
               } else {
                 reject(
-                  "Location is not Accurate, Please Make your Location accurate.!!"
+                  "Your Location Accuracy is "+position.coords.accuracy+" meters\n Please Make your Location accurate less than 200 meters.!!"
                 );
               }
             },

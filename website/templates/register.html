@@ -145,7 +145,7 @@ content%}
                 resolve();
               } else {
                 reject(
-                  "Location is not Accurate, Please Make your Location accurate.!!"
+                  "Your Location Accuracy is "+position.coords.accuracy+" meters\n Please Make your Location accurate less than 200 meters.!!"
                 );
               }
             },
