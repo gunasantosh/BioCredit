@@ -17,7 +17,7 @@ body{
     background: var(--bgcolor)
 }
 
-.container
+.container1
 {
     margin: auto;
     margin-top: 150px;
@@ -130,7 +130,7 @@ form{
 }
 
 @media (width <= 500px){
-    .container{
+    .container1{
         width: 70%;
         
     }
@@ -254,4 +254,172 @@ form{
 .menu ul li{
     display: inline-block;
 }
+
+/* Dashboard Navigation */
+
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #000;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.sidebar a{
+    display: block;
+    color: #01FE43;
+    padding: 8px;
+    margin: 16px;
+    text-decoration: none;
+}
+
+.sidebar a:active{
+    background-color: cyan;
+    color: black;
+}
+
+.sidebar a:hover:not(.active){
+    background-color: cyan;
+    color: black;
+    border-radius: 6px;
+}
+
+div.content {
+    background-color: #01FE43;
+    margin-left: 200px;
+    padding: 1px 16px;
+}
+
+@media (width <= 500px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .sidebar a{float: left;}
+    div.content{margin-left: 0;}
+}
+
+/* Capture Readings */
+
+.web-head {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.user_form {
+    background-color: black;
+    color: #01FE43;
+    width: 70%;
+    text-align: center;
+    margin: auto;
+    padding-bottom: 40px;
+    border-radius: 12px;
+    position:relative;
+}
+
+.user_form label,li{
+    padding: 10px;
+}
+
+.user_form li{
+    list-style: none;
+}
+
+
+.user_form input{
+    width: 70%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: var(--textcolor);
+    border: none;
+    border-bottom: 1px solid var(--textcolor);
+    outline: none;
+    background: transparent;
+    transition: border-color 0.3s;
+}
+
+.user_form select{
+    width: 70%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: var(--textcolor);
+    border: none;
+    border-bottom: 1px solid var(--textcolor);
+    outline: none;
+    background: transparent;
+    transition: border-color 0.3s;
+}
+
+.user_form select option{
+    background-color: #01FE43;
+    color: #000;
+}
+
+.user_form select option:hover{
+    background-color: #000;
+    color: #01FE43;
+}
+
+.user_form label {
+    position: absolute;
+    top: 50px;
+    left: 130px;
+    padding: 10px 0;
+    font-size: 12px;
+    color: var(--textcolor);
+    pointer-events: none;
+    transition: all 0.3s;
+    box-shadow: none;
+}
+
+.user_form input:focus ~ label,
+.user_form input:valid ~ label {
+    top: -20px;
+    font-size: 14px;
+    color: var(--textcolor);
+    margin-top: 10px;
+}
+
+#modalopen{
+    background-color: #000;
+    color: #01FE43;
+    border: 1px solid #01FE43;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    padding-inline: 40px;
+    padding-block: 10px;
+}
+
+#modalopen:hover{
+    background-color: #01FE43;
+    color: #000;
+    border: 1px solid #000;
+}
+
+#dup-sub{
+    background-color: #000;
+    color: #01FE43;
+    border: 1px solid #01FE43;
+    padding-inline: 20px;
+}
+
+#imageCanvas{
+    width: 70%;
+    margin: auto;
+    padding: 6px;
+    border: 1px solid #01FE43;
+    border-radius: 6px;
+}
+
+#imageCanvas2{
+    width: 50%;
+    margin: auto;
+    padding: 6px;
+    border: 1px solid #01FE43;
+    border-radius: 6px;
+}
+
 

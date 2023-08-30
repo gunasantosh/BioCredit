@@ -25,12 +25,24 @@ def home():
 @views.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
+    return render_template("dashboard.html")
+
+
+@views.route("/capture_readings", methods=["POST", "GET"])
+def capture_readings():
     msg = None
     if request.method == "GET":
         msg = request.args.get("msg")
     role = current_user.role
     user_list = User.query.filter_by(role="user").all()
-    return render_template("dashboard.html", role=role, user_list=user_list, msg=msg)
+    return render_template(
+        "capture_readings.html", role=role, user_list=user_list, msg=msg
+    )
+
+
+@views.route("/view_readings", methods=["POST", "GET"])
+def view_readings():
+    return render_template("view_readings.html")
 
 
 # @views.route('/save', methods=['POST'])

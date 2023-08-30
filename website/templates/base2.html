@@ -22,10 +22,16 @@
     />
   </head>
   <body>
-    {% block content %}
     <nav>
-      
+      <div class="sidebar">
+        <a href="{{ url_for('views.dashboard')}}">Home</a>
+        <a href="{{ url_for('views.capture_readings')}}">Capture reading</a>
+        <a href="{{ url_for('views.view_readings')}}">View reading</a>
+        <a href="{{ url_for('auth.logout')}}">Logout</a>
+      </div>
     </nav>
-    {% endblock content %}
+    <div class="content"> 
+      {% block content %}{% endblock content %}
+  </div>
   </body>
 </html>
