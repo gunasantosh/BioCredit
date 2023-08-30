@@ -125,12 +125,11 @@ form{
     text-decoration: none;
     padding: 10px 40px;
     font-size: 20px;
-    margin-top: 100px;
     color: var(--bgcolor);
     transition: .2s;
 }
 
-@media screen and (width <= 500px){
+@media (width <= 500px){
     .container{
         width: 70%;
         
@@ -207,7 +206,7 @@ form{
 }
 
 
-@media screen and (width <= 500px){
+@media (width <= 500px){
     .container{
         width: 70%;
         

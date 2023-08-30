@@ -151,7 +151,7 @@ footer .footer{
     display: none;
 }
 
-@media screen and (width <= 500px) {
+@media (width <= 500px) {
 
     .menu{
         display: none;
