@@ -9,9 +9,12 @@
       href="{{ url_for('static', filename='styles/index.css') }}"
     />
     <script
-      src="https://kit.fontawesome.com/a4e89c7158.js"
-      crossorigin="anonymous"
+      src="{{url_for('static',filename='kit.fontawesome.com_a4e89c7158.js')}}"
     ></script>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='font-awesome_6.4.2_css_all.min.css')}}"
+    />
   </head>
   <body>
     <header>
