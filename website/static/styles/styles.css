@@ -286,11 +286,142 @@ form{
     border-radius: 6px;
 }
 
+@media(width<=500px){
+    .sidebar{
+        display: none;
+    }
+}
+
+
+.mobile-menu{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: black;
+    box-shadow: 2px 0px 10px black;
+    display: none;
+}
+
+.mobile-menu .menu{
+    background-color: transparent;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    box-shadow: 1px 1px 5px rgb(121, 112, 112);
+}
+
+.mobile-menu .menu ul li {
+    list-style: none;
+    display: inline-block;
+}
+
+.mobile-menu .menu ul li a{
+    color: #ffffff;
+    text-decoration: none;
+    padding: 5px 10px;
+    margin-left: 25px;
+}
+
+.mobile-menu .logo h1{
+    color: #ffffff;
+}
+
+.mobile-menu .register button{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    margin-left: 10px;
+}
+
+.register .register-btn{
+    color: #ffffff;
+    background: linear-gradient(200deg,#01FE43,#333333);
+}
+
 div.content {
     background-color: #01FE43;
     margin-left: 200px;
     padding: 1px 16px;
 }
+
+.hamburger-menu{
+    display: none;
+}
+
+.hamburger-menu:hover{
+    cursor: pointer;
+}
+
+.off-canvas{
+    width: 50%;
+    position: fixed;
+    height: 100vh;
+    display: none;
+    text-align: center;
+    margin: auto;
+    background-color: #333333;
+    transition: all .5s;
+    z-index: 1;
+    
+}
+
+.off-canvas.is-active{
+    display: block;
+}
+
+.off-canvas h2{
+    color: #01FE43;
+    margin-block: 20px;
+}
+
+.off-canvas ul li a{
+    color: #01FE43;
+    text-decoration: none;
+    font-size: 22px;
+}
+
+.off-canvas ul li{
+    margin-top: 20px;
+}
+
+.hamburger-menu #fa,#fa-cross{
+    transition: all .4s;
+}
+
+#overlay{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: none;
+}
+
+#overlay.is-active{
+    display: block;
+}
+
+.off-canvas .register-btn,.login-btn{
+    padding: 10px 30px;
+    border: none;
+    font-weight: bold;
+    border-radius: 20px;
+    margin-left: 10px;
+    margin-top: 30px;
+    background: linear-gradient(90deg,#01FE43,#53c044);
+}
+
+.off-canvas .register-btn a,.login-btn a{
+    text-decoration: none;
+    color: black;
+}
+
 
 @media (width <= 500px) {
     .sidebar {
@@ -300,13 +431,33 @@ div.content {
     }
     .sidebar a{float: left;}
     div.content{margin-left: 0;}
+
+    .mobile-menu{
+        display: flex;
+    }
+
+        .menu{
+            display: none;
+        }
+        .register{
+            display: none;
+        }
+        .hamburger-menu{
+            display: block;
+        }
+
+        .web-head{
+            margin-top: 80px;
+        }
+
 }
 
 /* Capture Readings */
 
 .web-head {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
+
 }
 
 .user_form {
@@ -320,7 +471,7 @@ div.content {
     position:relative;
 }
 
-.user_form label,li{
+.user_form label,.user_form li{
     padding: 10px;
 }
 

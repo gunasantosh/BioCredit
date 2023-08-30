@@ -44,7 +44,7 @@
           </ul>
         </div>
         <div class="register">
-          <a href="{{ url_for('auth.login') }}" class="login-btn">Login</a>
+          <a href="{{ url_for('auth.login') }}" class="">Login</a>
           <a href="{{ url_for('auth.register') }}" class="register-btn"
             >Register</a
           >
@@ -72,10 +72,10 @@
         <li><a onclick="closeCanvas();" href="#">Explorer</a></li>
         <li><a onclick="closeCanvas();" href="#about">About</a></li>
       </ul>
-      <button class="login-btn">
+      <button onclick="location.href='{{ url_for('auth.login')}}';" class="login-btn">
         <a href="{{ url_for('auth.login')}}">Login</a></button
       ><br />
-      <button class="register-btn">
+      <button onclick="location.href='{{url_for('auth.register')}}';" class="register-btn">
         <a href="{{url_for('auth.register')}}">Register</a>
       </button>
     </div>

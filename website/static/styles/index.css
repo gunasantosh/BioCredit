@@ -49,11 +49,14 @@ nav .logo h1{
     color: #ffffff;
 }
 
-nav .register button{
+nav .register a{
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
     margin-left: 10px;
+    text-decoration: none;
+    background-color: white;
+    font-weight: bold;
 }
 
 .register .register-btn{

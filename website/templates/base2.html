@@ -20,6 +20,8 @@
       rel="stylesheet"
       href="{{url_for('static',filename='font-awesome_6.4.2_css_all.min.css')}}"
     />
+    <script src="{{url_for('static',filename='kit.fontawesome.com_a4e89c7158.js')}}"></script>
+
   </head>
   <body>
     <nav>
@@ -30,6 +32,115 @@
         <a href="{{ url_for('auth.logout')}}">Logout</a>
       </div>
     </nav>
+    <header>
+      <nav class="mobile-menu">
+        <div class="logo">
+          <h1>
+            BioCredit <i class="fa-solid fa-leaf" style="color: #00fe43"></i>
+          </h1>
+        </div>
+        <div class="menu">
+          <ul>
+            <li>
+              <a href="#home" id="Home" class="active" onclick="Home(this)"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a href="#about" id="Explore" onclick="Home(this)"
+                >Explorer&nbsp;<i
+                  class="fa-solid fa-arrow-up-right-from-square"
+                  style="color: #ffffff"
+                ></i
+              ></a>
+            </li>
+            <li>
+              <a href="#about" id="About" onclick="Home(this)">About</a>
+            </li>
+          </ul>
+        </div>
+        <div class="register">
+          <a href="{{ url_for('auth.login') }}" class="login-btn">Login</a>
+          <a href="{{ url_for('auth.register') }}" class="register-btn"
+            >Register</a
+          >
+        </div>
+        <div class="hamburger-menu">
+          <button id="fa" style="background-color: transparent; border: none">
+            <i class="fa-solid fa-bars fa-xl" style="color: #ffffff"></i>
+          </button>
+          <button
+            id="fa-cross"
+            style="background-color: transparent; border: none; display: none"
+          >
+            <i class="fa-solid fa-xmark fa-xl" style="color: #ffffff"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
+    <!-- off canvas starts here -->
+    <div id="overlay"></div>
+    <div class="off-canvas" id="offcanvas">
+      <h2>BioCredit <i class="fa-solid fa-leaf" style="color: #00fe43"></i></h2>
+      <hr style="opacity: 1;display: block;unicode-bidi: isolate;margin-block-start: 0.5em;margin-block-end: 0.5em;margin-inline-start: auto;margin-inline-end: auto;overflow: hidden;border-style: inset;border-width: 1px;" />
+      <ul style="
+      list-style: none;
+      padding: 0;
+  ">
+        <li><a onclick="closeCanvas();" href="{{ url_for('views.dashboard')}}">Home</a></li>
+        <li><a onclick="closeCanvas();" href="{{ url_for('views.capture_readings')}}">Capture reading</a></li>
+        <li><a onclick="closeCanvas();" href="{{ url_for('views.view_readings')}}">View reading</a></li>
+      </ul>
+      <button class="login-btn">
+        <a href="{{ url_for('auth.logout')}}">Logout</a></button
+      >
+    </div>
+    <script>
+      
+      const overlay = document.querySelector("#overlay");
+      const mainNav = document.querySelector("#offcanvas");
+      const navToggle = document.querySelector("#fa");
+      const navClose = document.querySelector("#fa-cross");
+
+      function closeCanvas() {
+        navClose.style.display = "none";
+        navToggle.style.display = "block";
+        if (mainNav.classList.contains("is-active")) {
+          mainNav.classList.remove("is-active");
+        }
+        if (overlay.classList.contains("is-active"))
+          overlay.classList.remove("is-active");
+      }
+
+      navToggle.addEventListener("click", () => {
+        navClose.style.display = "block";
+        navToggle.style.display = "none";
+        if (!mainNav.classList.contains("is-active")) {
+          mainNav.classList.add("is-active");
+        }
+        if (!overlay.classList.contains("is-active"))
+          overlay.classList.add("is-active");
+      });
+      navClose.addEventListener("click", () => {
+        navClose.style.display = "none";
+        navToggle.style.display = "block";
+        if (mainNav.classList.contains("is-active")) {
+          mainNav.classList.remove("is-active");
+        }
+        if (overlay.classList.contains("is-active"))
+          overlay.classList.remove("is-active");
+      });
+
+      overlay.addEventListener("click", () => {
+        if (mainNav.classList.contains("is-active"))
+          mainNav.classList.remove("is-active");
+        if (overlay.classList.contains("is-active"))
+          overlay.classList.remove("is-active");
+        navClose.style.display = "none";
+        navToggle.style.display = "block";
+      });
+    </script>
+    <!-- off canvas ends here -->
     <div class="content"> 
       {% block content %}{% endblock content %}
   </div>
