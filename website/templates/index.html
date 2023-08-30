@@ -51,11 +51,11 @@
           <button id="fa" style="background-color: transparent; border: none">
             <i class="fa-solid fa-bars fa-xl" style="color: #ffffff"></i>
           </button>
-          <button id="fa-cross" style="background-color: transparent; border: none;display: none;">
-            <i
-              class="fa-solid fa-xmark fa-xl"
-              style="color: #ffffff"
-            ></i>
+          <button
+            id="fa-cross"
+            style="background-color: transparent; border: none; display: none"
+          >
+            <i class="fa-solid fa-xmark fa-xl" style="color: #ffffff"></i>
           </button>
         </div>
       </nav>
@@ -67,11 +67,15 @@
       <hr />
       <ul>
         <li><a onclick="closeCanvas();" href="#home">Home</a></li>
-        <li><a onclick="closeCanvas();" href="#explore">Explorer</a></li>
+        <li><a onclick="closeCanvas();" href="#">Explorer</a></li>
         <li><a onclick="closeCanvas();" href="#about">About</a></li>
       </ul>
-      <button class="login-btn"><a href="">Login</a></button><br />
-      <button class="register-btn"><a href="">Register</a></button>
+      <button class="login-btn">
+        <a href="{{ url_for('auth.login')}}">Login</a></button
+      ><br />
+      <button class="register-btn">
+        <a href="{{url_for('auth.register')}}">Register</a>
+      </button>
     </div>
     <!-- off canvas ends here -->
     <div class="home" id="home">
@@ -173,10 +177,10 @@
       const navToggle = document.querySelector("#fa");
       const navClose = document.querySelector("#fa-cross");
 
-      function closeCanvas(){
-        navClose.style.display='none';
-        navToggle.style.display='block';
-        if(mainNav.classList.contains('is-active')){
+      function closeCanvas() {
+        navClose.style.display = "none";
+        navToggle.style.display = "block";
+        if (mainNav.classList.contains("is-active")) {
           mainNav.classList.remove("is-active");
         }
         if (overlay.classList.contains("is-active"))
@@ -184,18 +188,18 @@
       }
 
       navToggle.addEventListener("click", () => {
-        navClose.style.display='block';
-        navToggle.style.display='none';
-        if(!mainNav.classList.contains('is-active')){
+        navClose.style.display = "block";
+        navToggle.style.display = "none";
+        if (!mainNav.classList.contains("is-active")) {
           mainNav.classList.add("is-active");
         }
         if (!overlay.classList.contains("is-active"))
           overlay.classList.add("is-active");
       });
       navClose.addEventListener("click", () => {
-        navClose.style.display='none';
-        navToggle.style.display='block';
-        if(mainNav.classList.contains('is-active')){
+        navClose.style.display = "none";
+        navToggle.style.display = "block";
+        if (mainNav.classList.contains("is-active")) {
           mainNav.classList.remove("is-active");
         }
         if (overlay.classList.contains("is-active"))
@@ -207,8 +211,8 @@
           mainNav.classList.remove("is-active");
         if (overlay.classList.contains("is-active"))
           overlay.classList.remove("is-active");
-        navClose.style.display='none';
-        navToggle.style.display='block';
+        navClose.style.display = "none";
+        navToggle.style.display = "block";
       });
     </script>
   </body>
