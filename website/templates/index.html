@@ -44,8 +44,10 @@
           </ul>
         </div>
         <div class="register">
-          <button>Login</button>
-          <button class="register-btn">Register</button>
+          <a href="{{ url_for('auth.login') }}" class="login-btn">Login</a>
+          <a href="{{ url_for('auth.register') }}" class="register-btn"
+            >Register</a
+          >
         </div>
         <div class="hamburger-menu">
           <button id="fa" style="background-color: transparent; border: none">
