@@ -49,20 +49,11 @@ nav .logo h1{
     color: #ffffff;
 }
 
-nav .register .register-btn{
+nav .register button{
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
     margin-left: 10px;
-}
-
-nav .register a{
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    margin-left: 10px;
-    background-color: #ffffff;
-    text-decoration: none;
 }
 
 .register .register-btn{
@@ -151,7 +142,76 @@ footer .footer{
     display: none;
 }
 
-@media (width <= 500px) {
+.hamburger-menu:hover{
+    cursor: pointer;
+}
+
+.off-canvas{
+    width: 50%;
+    position: fixed;
+    height: 100vh;
+    display: none;
+    text-align: center;
+    margin: auto;
+    background-color: #333333;
+    transition: all .5s;
+    z-index: 1;
+    
+}
+
+.off-canvas.is-active{
+    display: block;
+}
+
+.off-canvas h2{
+    color: #01FE43;
+    margin-block: 20px;
+}
+
+.off-canvas ul li a{
+    color: #01FE43;
+    text-decoration: none;
+    font-size: 22px;
+}
+
+.off-canvas ul li{
+    margin-top: 20px;
+}
+
+.hamburger-menu #fa,#fa-cross{
+    transition: all .4s;
+}
+
+#overlay{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: none;
+}
+
+#overlay.is-active{
+    display: block;
+}
+
+.off-canvas .register-btn,.login-btn{
+    padding: 10px 30px;
+    border: none;
+    font-weight: bold;
+    border-radius: 20px;
+    margin-left: 10px;
+    margin-top: 30px;
+    background: linear-gradient(90deg,#01FE43,#53c044);
+}
+
+.off-canvas .register-btn a,.login-btn a{
+    text-decoration: none;
+    color: black;
+}
+
+@media screen and (width <= 500px) {
 
     .menu{
         display: none;
@@ -219,5 +279,4 @@ footer .footer{
     footer .footer{
         margin-top: 30px;
     }
-
 }
