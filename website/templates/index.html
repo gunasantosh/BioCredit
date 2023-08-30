@@ -44,18 +44,36 @@
           </ul>
         </div>
         <div class="register">
-          <a href="{{ url_for('auth.login') }}" class="login-btn">Login</a>
-          <a href="{{ url_for('auth.register') }}" class="register-btn"
-            >Register</a
-          >
+          <button>Login</button>
+          <button class="register-btn">Register</button>
         </div>
         <div class="hamburger-menu">
-          <a href="#"
-            ><i class="fa-solid fa-bars fa-xl" style="color: #ffffff"></i
-          ></a>
+          <button id="fa" style="background-color: transparent; border: none">
+            <i class="fa-solid fa-bars fa-xl" style="color: #ffffff"></i>
+          </button>
+          <button id="fa-cross" style="background-color: transparent; border: none;display: none;">
+            <i
+              class="fa-solid fa-xmark fa-xl"
+              style="color: #ffffff"
+            ></i>
+          </button>
         </div>
       </nav>
     </header>
+    <div id="overlay"></div>
+    <!-- off canvas starts here -->
+    <div class="off-canvas" id="offcanvas">
+      <h2>BioCredit <i class="fa-solid fa-leaf" style="color: #00fe43"></i></h2>
+      <hr />
+      <ul>
+        <li><a onclick="closeCanvas();" href="#home">Home</a></li>
+        <li><a onclick="closeCanvas();" href="#explore">Explorer</a></li>
+        <li><a onclick="closeCanvas();" href="#about">About</a></li>
+      </ul>
+      <button class="login-btn"><a href="">Login</a></button><br />
+      <button class="register-btn"><a href="">Register</a></button>
+    </div>
+    <!-- off canvas ends here -->
     <div class="home" id="home">
       <div class="blockchain-img">
         <img
@@ -125,6 +143,73 @@
         document.getElementById("About").classList.remove("active");
         x.classList.add("active");
       }
+
+      // function OffCanvas() {
+      //   document.getElementById("offcanvas").classList.add("active");
+      //   document.getElementById("fa").style.display = "none";
+      //   document.getElementById("fa-cross").style.display = "block";
+      // }
+
+      // function OffCanvasClose() {
+      //   document.getElementById("offcanvas").style.display = "none";
+      //   document.getElementById("fa").style.display = "block";
+      //   document.getElementById("fa-cross").style.display = "none";
+      // }
+
+      // document.addEventListener("click", function (e) {
+      //   console.log(e.target.id);
+
+      //   if (e.target.id === "fa") {
+      //     console.log("open");
+      //     OffCanvas();
+      //     return;
+      //   } else if (e.target.id !== "offcanvas") {
+      //   }
+      //   OffCanvasClose();
+      // });
+
+      const overlay = document.querySelector("#overlay");
+      const mainNav = document.querySelector("#offcanvas");
+      const navToggle = document.querySelector("#fa");
+      const navClose = document.querySelector("#fa-cross");
+
+      function closeCanvas(){
+        navClose.style.display='none';
+        navToggle.style.display='block';
+        if(mainNav.classList.contains('is-active')){
+          mainNav.classList.remove("is-active");
+        }
+        if (overlay.classList.contains("is-active"))
+          overlay.classList.remove("is-active");
+      }
+
+      navToggle.addEventListener("click", () => {
+        navClose.style.display='block';
+        navToggle.style.display='none';
+        if(!mainNav.classList.contains('is-active')){
+          mainNav.classList.add("is-active");
+        }
+        if (!overlay.classList.contains("is-active"))
+          overlay.classList.add("is-active");
+      });
+      navClose.addEventListener("click", () => {
+        navClose.style.display='none';
+        navToggle.style.display='block';
+        if(mainNav.classList.contains('is-active')){
+          mainNav.classList.remove("is-active");
+        }
+        if (overlay.classList.contains("is-active"))
+          overlay.classList.remove("is-active");
+      });
+
+      overlay.addEventListener("click", () => {
+        if (mainNav.classList.contains("is-active"))
+          mainNav.classList.remove("is-active");
+        if (overlay.classList.contains("is-active"))
+          overlay.classList.remove("is-active");
+        navClose.style.display='none';
+        navToggle.style.display='block';
+      });
     </script>
   </body>
 </html>
