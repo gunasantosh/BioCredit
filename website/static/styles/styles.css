@@ -265,6 +265,7 @@ form{
     position: fixed;
     height: 100%;
     overflow: auto;
+    box-shadow: 2px 2px 10px #000;
 }
 
 .sidebar a{
@@ -273,6 +274,7 @@ form{
     padding: 8px;
     margin: 16px;
     text-decoration: none;
+    transition: all .3s;
 }
 
 .sidebar a:active{
@@ -281,9 +283,17 @@ form{
 }
 
 .sidebar a:hover:not(.active){
-    background-color: cyan;
-    color: black;
+    background-color: #01FE43;
+    color: #000;
     border-radius: 6px;
+    text-align: center;
+}
+
+.sidebar h2{
+    font-size: 28px;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 10px;
 }
 
 @media(width<=500px){
@@ -457,7 +467,7 @@ div.content {
 .web-head {
     text-align: center;
     margin-bottom: 30px;
-
+    margin-top: 20px;
 }
 
 .user_form {
@@ -572,5 +582,68 @@ div.content {
     border: 1px solid #01FE43;
     border-radius: 6px;
 }
+
+#retakeBtn{
+    background-color: #000;
+    color: #01FE43;
+    border: 1px solid #01FE43;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    padding-inline: 40px;
+    padding-block: 10px;
+}
+
+#captureBtn{
+    background-color: #000;
+    color: #01FE43;
+    border: 1px solid #01FE43;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    padding-inline: 40px;
+    padding-block: 10px;
+}
+
+#close-bottom{
+    background-color: #000;
+    color: #01FE43;
+    border: 1px solid #01FE43;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    padding-inline: 40px;
+    padding-block: 10px;
+}
+
+
+#dup-sub:hover{
+    background-color: #01FE43;
+    color: #000;
+    border: 1px solid #000;
+}
+
+#close-bottom:hover{
+    background-color: #01FE43;
+    color: #000;
+    border: 1px solid #000;
+}
+
+#captureBtn:hover{
+    background-color: #01FE43;
+    color: #000;
+    border: 1px solid #000;
+}
+
+#retakeBtn:hover{
+    background-color: #01FE43;
+    color: #000;
+    border: 1px solid #000;
+}
+
+@media (width <= 500px){
+    .user_form{
+        width: 90%;
+    }
+}
+
+
 
 

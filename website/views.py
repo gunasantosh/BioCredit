@@ -11,7 +11,7 @@ from geopy.distance import geodesic
 views = Blueprint("views", __name__)
 
 con = mysql.connector.connect(
-    host="localhost", user="root", password="mypassword", database="dapp"
+    host="localhost", user="root", password="", database="dapp"
 )
 cursor = con.cursor(buffered=True)
 
