@@ -284,6 +284,9 @@ block content %}
     });
 
     $(document).ready(function(e){
+      if($('#selectedUser')){
+        $('#selectedUser').select2();
+      }
       async function checkLocationPermission() {
         try {
           const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });

@@ -260,7 +260,7 @@ form{
 .sidebar {
     margin: 0;
     padding: 0;
-    width: 200px;
+    width: auto;
     background-color: #000;
     position: fixed;
     height: 100%;
@@ -274,19 +274,23 @@ form{
     padding: 8px;
     margin: 16px;
     text-decoration: none;
-    transition: all .3s;
+    transition: all .4s;
 }
 
 .sidebar a:active{
     background-color: cyan;
-    color: black;
+    color: #000;
 }
 
-.sidebar a:hover:not(.active){
+.sidebar>a>svg:hover{
+    color: #000;
+}
+
+.sidebar a:hover{
     background-color: #01FE43;
     color: #000;
     border-radius: 6px;
-    text-align: center;
+    transform: translate(5px);
 }
 
 .sidebar h2{
@@ -295,6 +299,41 @@ form{
     padding-top: 20px;
     padding-bottom: 10px;
 }
+
+
+/* select2 stylings */
+/* select2 all options container */
+.select2-results{
+    background-color: #000;
+    color:#01FE43;
+}
+
+/* select2 option hovered */
+.select2-results__option--highlighted{
+    background-color: #01FE43!important;
+    color:#000!important;
+}
+
+/* select2 option selected */
+.select2-results__option--selected{
+    background-color: #01FE43!important;
+    color:#000!important;
+}
+
+/* select2 searchbox */
+.select2-search{
+    background-color: #000;
+}
+
+/* select2 top apperance */
+.select2-selection--single{
+    background-color: #01FE43!important;
+    outline: 1px solid #01fe34;
+    outline-offset: 5px;
+}
+/* select2 stylings ended */
+
+
 
 @media(width<=500px){
     .sidebar{
