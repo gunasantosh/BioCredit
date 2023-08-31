@@ -37,6 +37,7 @@ content%}
         <input type="password" name="password2" required="" />
         <label>Confirm Password :</label>
       </div>
+      <span id="status" data-status style="display:none;"></span>
       <div class="user-box" id="check-box">
         <input type="checkbox" id="check" name="accept" required="" />
         <p>
@@ -113,6 +114,24 @@ content%}
           $("#submit-btn").prop("disabled", true);
         }
       });
+      watchLocation();
+
+      async function checkLocationPermission() {
+        try {
+          const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
+
+          if (permissionStatus.state === 'granted') {
+            console.log('Location permission granted');
+          } else if (permissionStatus.state === 'prompt') {
+            createtoast('Allow above Location permission prompt to Continue.!!');
+          } else if (permissionStatus.state === 'denied') {
+            createtoast('Allow Location Permission to Continue.!!');
+          }
+        } catch (error) {
+          console.error('Error checking location permission:', error);
+        }
+      }
+      checkLocationPermission();
     });
 
     submitbtn.addEventListener("click", async function (event) {
@@ -123,16 +142,63 @@ content%}
       } else {
         var latitude = $("#lat").val();
         var longitude = $("#long").val();
-        if (latitude !== "" && longitude !== "") {
+        var accuracy = $('#acc').val();
+        if (latitude !== "" && longitude !== "" && accuracy !== "") {
           var resetsbtn = document.getElementById("org-submit");
           resetsbtn.click();
         } else {
-          await getLocationAsync().catch((error) => {
-            createtoast(error);
-          }); // Wait for getLocationAsync to complete
+          createtoast($('#status').val());
+          //await getLocationAsync().catch((error) => {
+          //  createtoast(error);
+          //}); // Wait for getLocationAsync to complete
         }
       }
     });
+
+    let watch;
+
+    function watchLocation(){
+      watch=navigator.geolocation.watchPosition(HandlePosition,HandleError,{ maximumAge: 0, timeout: 5000, enableHighAccuracy: true });
+    }
+
+    function closeWatchLocation(){
+      navigator.geolocation.clearWatch(watch);
+    }
+
+    function HandlePosition(position){
+      console.log(position.coords);
+      if (position.coords.accuracy <= 200) {
+        $("#lat").val(position.coords.latitude);
+        $("#long").val(position.coords.longitude);
+        $("#acc").val(position.coords.accuracy);
+        $('#status').val('success');
+        closeWatchLocation();
+        createtoast("Location Captured Successfully.!!");
+      }
+      else{
+        $('#status').val('Finding Accurate Location, Please Wait.!!');
+      }
+    }
+
+    function HandleError(error){
+      let reason = '';
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          reason = "Please Allow the Location Permission to Continue.!!";
+          createtoast(reason)
+          break;
+        case error.POSITION_UNAVAILABLE:
+          reason = "Location information is unavailable to Continue.!!";
+          break;
+        case error.TIMEOUT:
+          reason = "The request to get user location timed out,\nPlease Try Again.!!";
+          break;
+        case error.UNKNOWN_ERROR:
+          reason = "An unknown error occurred.";
+          break;
+      }
+      $('#status').val(reason);
+    }
 
     async function getLocationAsync() {
       return new Promise((resolve, reject) => {

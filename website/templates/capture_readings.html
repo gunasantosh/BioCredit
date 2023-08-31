@@ -20,6 +20,7 @@ block content %}
     {% else %}
     <input type="hidden" name="selectedUser" id="selectedUser" />
     {% endif %}
+    <span id="status" data-status style="display: none"></span>
     <input
       type="text"
       name="reading"
@@ -182,21 +183,65 @@ block content %}
       });
     }
 
+    let watch;
+
+    function watchLocation(){
+      watch=navigator.geolocation.watchPosition(HandlePosition,HandleError,{ maximumAge: 0, timeout: 5000, enableHighAccuracy: true });
+    }
+
+    function closeWatchLocation(){
+      navigator.geolocation.clearWatch(watch);
+    }
+
+    function HandlePosition(position){
+      console.log(position.coords);
+      if (position.coords.accuracy <= 200) {
+        latitude=position.coords.latitude;
+        longitude=position.coords.longitude;
+        accuracy=position.coords.accuracy;
+        $('#status').val('success');
+        closeWatchLocation();
+        createtoast("Location Captured Successfully.!!");
+      }
+      else{
+        $('#status').val('Finding Accurate Location, Please Wait.!!');
+      }
+    }
+
+    function HandleError(error){
+      let reason = '';
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          reason = "Please Allow the Location Permission to Continue.!!";
+          createtoast(reason)
+          break;
+        case error.POSITION_UNAVAILABLE:
+          reason = "Location information is unavailable to Continue.!!";
+          break;
+        case error.TIMEOUT:
+          reason = "The request to get user location timed out,\nPlease Try Again.!!";
+          break;
+        case error.UNKNOWN_ERROR:
+          reason = "An unknown error occurred.";
+          break;
+      }
+      $('#status').val(reason);
+    }
+
+    watchLocation();
+
     dup_btn.addEventListener('click',async function(event){
 
-      await getLocationAsync().catch((error)=>{
-        createtoast(error);
-        return;
-      });
+      //await getLocationAsync().catch((error)=>{
+      //  createtoast(error);
+      //  return;
+      //});
 
-        if(!latitude || !longitude || !accuracy){
-        createtoast("Location is Required For the Form Submission.!!");
-        return;
-        }
+        
 
-
-      {% if role == 'superuser' %}
         var selecteduser=document.getElementById('selectedUser');
+      {% if role == 'superuser' %}
+
         if(!selecteduser.value){
           selecteduser.focus();
           createtoast('Select a Valid User.!!');
@@ -216,6 +261,11 @@ block content %}
           return;
         }
 
+        if(!latitude || !longitude || !accuracy){
+          createtoast($("#status").val());
+          return;
+          }
+
         $.ajax({
           url:"http://127.0.0.1:5000/process_form",
           type:"POST",
@@ -231,6 +281,25 @@ block content %}
             }
           }
         });
+    });
+
+    $(document).ready(function(e){
+      async function checkLocationPermission() {
+        try {
+          const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
+
+          if (permissionStatus.state === 'granted') {
+            console.log('Location permission granted');
+          } else if (permissionStatus.state === 'prompt') {
+            createtoast('Allow above Location permission prompt to Continue.!!');
+          } else if (permissionStatus.state === 'denied') {
+            createtoast('Allow Location Permission to Continue.!!');
+          }
+        } catch (error) {
+          console.error('Error checking location permission:', error);
+        }
+      }
+      checkLocationPermission();
     });
 </script>
 {% endblock content %}

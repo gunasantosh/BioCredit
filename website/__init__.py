@@ -13,7 +13,7 @@ def create_app():
     app.template_folder = "website/templates"
     app.static_folder = "website/static"
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:mypassword@localhost/dapp"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:@localhost/dapp"
 
     db.init_app(app)
 
