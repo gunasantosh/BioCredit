@@ -50,7 +50,7 @@
       <div class="sidebar">
         <h2 >BioCredit <i class="fa-solid fa-leaf" style="color: #00fe43"></i></h2>
       <hr style="opacity: 1;display: block;unicode-bidi: isolate;margin-block-start: 0.5em;margin-block-end: 0.5em;margin-inline-start: auto;margin-inline-end: auto;overflow: hidden;border-style: inset;border-width: 1px;" />
-        <a href="{{ url_for('views.dashboard')}}"><i class="fa-solid fa-house" style="margin-right:6px;"></i> Home</a>
+        <a href="{{ url_for('views.dashboard')}}"><i class="fa-solid fa-user" style="margin-right:6px;"></i> Profile</a>
         <a href="{{ url_for('views.capture_readings')}}"><i class="fa-solid fa-camera" style="margin-right:6px;"></i>&nbsp;Capture&nbsp;reading</a>
         <a href="{{ url_for('views.view_readings')}}"><i class="fa-solid fa-eye" style="margin-right:6px;"></i> View reading</a>
         <a href="{{ url_for('auth.logout')}}"><i class="fa-solid fa-circle-left" style="margin-right:6px;"></i> Logout</a>
@@ -111,12 +111,12 @@
       list-style: none;
       padding: 0;
   ">
-        <li><a onclick="closeCanvas();" href="{{ url_for('views.dashboard')}}">Home</a></li>
-        <li><a onclick="closeCanvas();" href="{{ url_for('views.capture_readings')}}">Capture reading</a></li>
-        <li><a onclick="closeCanvas();" href="{{ url_for('views.view_readings')}}">View reading</a></li>
+        <a onclick="closeCanvas();" href="{{ url_for('views.dashboard')}}"><i class="fa-solid fa-user" style="margin-right:6px;"></i> Profile</a>
+        <a onclick="closeCanvas();" href="{{ url_for('views.capture_readings')}}"><i class="fa-solid fa-camera" style="margin-right:6px;"></i> Capture reading</a>
+        <a onclick="closeCanvas();" href="{{ url_for('views.view_readings')}}"><i class="fa-solid fa-eye" style="margin-right:6px;"></i> View reading</a>
       </ul>
       <button class="login-btn">
-        <a href="{{ url_for('auth.logout')}}">Logout</a></button
+        <a href="{{ url_for('auth.logout')}}"><i class="fa-solid fa-circle-left" style="margin-right:6px;"></i> Logout</a></button
       >
     </div>
     <script>
