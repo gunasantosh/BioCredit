@@ -7,6 +7,11 @@
     font-family: 'Poppins', sans-serif;
 }
 
+*::selection{
+    background-color: #01fe34;
+    color: #000;
+}
+
 :root{
     --bgcolor : #01FE43;
     --textcolor : #01FE43;
