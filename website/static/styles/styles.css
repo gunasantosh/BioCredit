@@ -8,8 +8,8 @@
 }
 
 *::selection{
-    background-color: #01fe34;
-    color: #000;
+    color: #01fe34;
+    background-color: #000;
 }
 
 :root{
