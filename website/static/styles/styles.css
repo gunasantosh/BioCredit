@@ -811,5 +811,58 @@ div.content {
     }
 }
 
+/* User Profile */
 
+.main-profile{
+    display: flex;
+    flex-direction: column;
+    padding: 20px 30px;
+    gap: 20px;
+}
 
+.user-details{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.user-profile{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #000;
+    color: #01fe34;
+    padding: 10px ;
+    border-radius: 6px;
+    width: 60%;
+}
+
+.user-image{
+    padding: 10px;
+    margin: auto;
+}
+
+.user-general-details{
+    padding: 10px;
+}
+
+.user-qr{
+    background-color: #000;
+    padding: 10px;
+    border-left: 1px solid #01fe34;
+    border-radius: 6px;
+    text-align: center;
+    width: 40%;
+}
+
+.user-qr .qr-code{
+    margin: auto;
+}
+
+.user-carbon-credits{
+    background-color: #000;
+    color: #01fe34;
+    border: 1px solid #000;
+    border-radius: 6px;
+    padding: 10px;
+}

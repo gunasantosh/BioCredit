@@ -1,4 +1,30 @@
 {% extends 'base2.html' %} {% block title %} Dashboard | BioCredit &#128594; {% endblock title %} {%
 block content%}
-<h1>Dashboard</h1>
+<div class="main-profile">
+    <div class="user-details">
+        <div class="user-profile">
+            <div class="user-image">
+                <picture>
+                    <img src="{{ url_for('static', filename='images/user-icon.png') }}" alt="Profile-picture" width="100px">
+                </picture>
+            </div>
+            <div class="user-general-details">
+                <p><strong>User Name :</strong> &nbsp; John Vivek</p>
+                <p><strong>Name :</strong> &nbsp; John Vivek</p>
+                <p><strong>Address :</strong> &nbsp; 21-10/2-1/B</p>
+                <p><strong>Meter Location :</strong> &nbsp; 21-10/2-1/B</p>
+            </div>
+        </div>
+        <div class="user-qr">
+            <div class="rq-code">
+                <picture>
+                    <img src="{{ url_for('static', filename='images/user-icon.png') }}" alt="User-QR" width="200px">
+                </picture>
+            </div>
+        </div>
+    </div>
+    <div class="user-carbon-credits">
+
+    </div>
+</div>
 {% endblock content %}
