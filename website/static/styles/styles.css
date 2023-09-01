@@ -853,9 +853,10 @@ div.content {
     border-radius: 6px;
     text-align: center;
     width: 40%;
+    display: flex;
 }
 
-.user-qr .qr-code{
+.user-qr img{
     margin: auto;
 }
 

@@ -6,10 +6,12 @@ import mysql.connector
 from mysql.connector import errors
 from datetime import datetime
 from geopy.distance import geodesic
+import segno
+from cryptography.fernet import Fernet
 
 
 views = Blueprint("views", __name__)
-
+key=b'Jxb-gEda5CtPcq-z2oiCDbIYzUbe9C_ooa_CTl_QCEs='
 con = mysql.connector.connect(
     host="localhost", user="root", password="", database="dapp"
 )
@@ -25,7 +27,10 @@ def home():
 @views.route("/dashboard", methods=["GET", "POST"])
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    fernet = Fernet(key)
+    encMessage = fernet.encrypt(current_user.username.encode())
+    qrcode=segno.make('http://127.0.0.1:5000/qr_redirect?secret={}'.format(encMessage))
+    return render_template("dashboard.html",current_user=current_user,qrcode=qrcode)
 
 
 @views.route("/capture_readings", methods=["POST", "GET"])
