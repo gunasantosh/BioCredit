@@ -32,10 +32,10 @@ endblock title %} {% block content%}
     </div>
   </div>
   <div id="mapdiv" class="user-location">
-    
+
   </div>
   <script>
-  
+
     // Initialize and add the map
     function initMap() {
 
@@ -54,10 +54,30 @@ endblock title %} {% block content%}
             center: coordinates,
         });
 
-        new google.maps.Marker({
+        const marker = new google.maps.Marker({
           position: coordinates,
           map,
           title: "{{current_user.username}}'s Meter Location",
+        });
+
+        let infowindow = new google.maps.InfoWindow({
+          content: "<b>{{current_user.username}}'s Meter Location</b>"
+        });
+        
+        google.maps.event.addListener(marker, "click", function() {
+          console.log(infowindow);
+          //infowindow.open(map,marker);
+          if(infowindow.anchor===undefined){
+            infowindow.open(map,marker);
+
+          }else{
+            infowindow.close();
+            infowindow = new google.maps.InfoWindow({
+              content: "<b>{{current_user.username}}'s Meter Location</b>"
+            });
+          }
+          console.log(infowindow);
+
         });
     }
 </script>
