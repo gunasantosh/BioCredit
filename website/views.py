@@ -12,10 +12,7 @@ from cryptography.fernet import Fernet
 
 views = Blueprint("views", __name__)
 key=b'Jxb-gEda5CtPcq-z2oiCDbIYzUbe9C_ooa_CTl_QCEs='
-con = mysql.connector.connect(
-    host="localhost", user="root", password="", database="dapp"
-)
-cursor = con.cursor(buffered=True)
+
 
 
 @views.route("/")
@@ -35,13 +32,38 @@ def dashboard():
 
 @views.route("/capture_readings", methods=["POST", "GET"])
 def capture_readings():
+    con = mysql.connector.connect(
+    host="localhost", user="root", password="", database="dapp"
+)
+    cursor = con.cursor(buffered=False,dictionary=True)
     msg = None
     if request.method == "GET":
         msg = request.args.get("msg")
     role = current_user.role
-    user_list = User.query.filter_by(role="user").all()
+    user_list=None
+    flag=True
+    today = datetime.today().strftime("%Y-%m-%d")
+    if(role=='superuser'):
+        q="SELECT * FROM user WHERE role='user' AND 0 IN (SELECT COUNT(*) FROM readings WHERE readings.username=user.username AND timestamp>='{} 00:00:00' AND timestamp<='{} 23:59:59')".format(today,today)
+        cursor.execute(q)
+        ress=cursor.fetchall()
+        print(ress)
+        if(len(ress)>0):
+            user_list=ress
+        else:
+            user_list=[]
+            flag=False
+    else:
+        q="SELECT * FROM readings WHERE username='{}' AND timestamp>='{} 00:00:00' AND timestamp<='{} 23:59:59'".format(current_user.username,today,today)
+        cursor.execute(q)
+        ress=cursor.fetchall()
+        if(len(ress)>0):
+            flag=False
+
+
+    
     return render_template(
-        "capture_readings.html", role=role, user_list=user_list, msg=msg
+        "capture_readings.html", role=role, user_list=user_list, msg=msg, flag=flag
     )
 
 
@@ -66,6 +88,10 @@ def view_readings():
 @views.route("/process_form", methods=["POST"])
 @login_required
 def process_form():
+    con = mysql.connector.connect(
+    host="localhost", user="root", password="", database="dapp"
+)
+    cursor = con.cursor(buffered=False,dictionary=True)
     meter_reading = request.json["reading"]
     image = request.json["imgurl"]
     latitude = request.json["latitude"]
@@ -83,11 +109,21 @@ def process_form():
     query = "SELECT * FROM user WHERE username='{}'".format(username)
     cursor.execute(query)
     res = cursor.fetchall()
+    if(len(res)>0):
+        user_latitude = res[0]['latitude']
+        user_longitude = res[0]['longitude']
+        user_accuracy = res[0]['accuracy']
+        user_location = (user_latitude, user_longitude)
+    else:
+        return jsonify(
+            {
+                "statusCode": 999,
+                "msg": "Invalid Username Given"
+            }
+        )
+
     print(res)
-    user_latitude = res[0][5]
-    user_longitude = res[0][6]
-    user_accuracy = res[0][7]
-    user_location = (user_latitude, user_longitude)
+    
 
     print(current_location)
     print(user_location)
@@ -96,8 +132,8 @@ def process_form():
     if distance <= (float(accuracy) + float(user_accuracy) + 200):
         today = datetime.today().strftime("%Y-%m-%d")
         try:
-            query = "INSERT INTO readings (meter_reading,date, image, username) VALUES ('{}','{}','{}','{}')".format(
-                meter_reading, today, image, username
+            query = "INSERT INTO readings (meter_reading,date, image, username,submitted_by) VALUES ('{}','{}','{}','{}','{}')".format(
+                meter_reading, today, image, username, current_user.id
             )
             cursor.execute(query)
             con.commit()

@@ -2,6 +2,7 @@
 block content %}
 <h1 class="web-head">Capture Readings</h1>
 <div class="user_form">
+  {% if flag %}
   <form
     id="user-form"
     action="/process_form"
@@ -12,9 +13,13 @@ block content %}
     {% if role == 'superuser' %}
     <li id="dropdown_">
       <select name="selectedUser" id="selectedUser">
+        {% if user_list|length>0 %}
         {% for user in user_list %}
         <option value="{{ user.username }}">{{ user.username }}</option>
         {% endfor %}
+        {% else %}
+        <option value="">All User's Readings are Taken For This Day.!!</option>
+        {% endif %}
       </select>
     </li>
     {% else %}
@@ -91,6 +96,13 @@ block content %}
       </div>
     </div>
   </div>
+  {% else %}
+    {% if user_list==None %}
+    <h3>Today's Meter Reading is Submitted, Come Back Tomorrow.!!</h3>
+    {% else %}
+    <h3>Collection of all meter readings is Completed, Come Back Tomorrow.!!</h3>
+    {% endif %}
+  {% endif %}
 </div>
 <div
   id="contoast"
@@ -274,7 +286,7 @@ block content %}
 
           success:function(data){
             if(data.statusCode===200){
-              window.location.href="http://127.0.0.1:5000/dashboard?msg="+encodeURIComponent(data.msg);
+              window.location.href="http://127.0.0.1:5000/capture_readings?msg="+encodeURIComponent(data.msg);
             }
             else{
               createtoast(data.msg);
@@ -284,9 +296,11 @@ block content %}
     });
 
     $(document).ready(function(e){
+      {% if role!='user' %}
       if($('#selectedUser')){
         $('#selectedUser').select2();
       }
+      {% endif %}
       async function checkLocationPermission() {
         try {
           const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
