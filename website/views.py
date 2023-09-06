@@ -69,7 +69,102 @@ def capture_readings():
 
 @views.route("/view_readings", methods=["POST", "GET"])
 def view_readings():
-    return render_template("view_readings.html")
+    if(current_user.role=="user"):
+        th="""<th>S.no</th>
+                <th>Date</th>
+                <th>Reading</th>
+                <th>Taken By</th>
+                <th>Actions</th>"""
+    else:
+        th="""<th>S.no</th>
+                <th>Date</th>
+                <th>Username</th>
+                <th>Reading</th>
+                <th>Actions</th>"""
+    role=current_user.role
+    username=current_user.username
+
+    return render_template("view_readings.html",th=th,role=role,username=username)
+
+@views.route("/modReadings",methods=["POST","GET"])
+def modReadings():
+    try:
+        con = mysql.connector.connect(host="localhost", user="root", password="", database="dapp")
+        cursor = con.cursor(buffered=False,dictionary=True)
+        if request.method == 'GET':
+            draw = request.args.get('draw')
+            row = int(request.args['start'])
+            rowperpage = int(request.args['length'])
+            searchValue = request.args["search[value]"]
+            username=request.args['username']
+            print(username)
+            print(draw)
+            print(row)
+            print(rowperpage)
+            print(searchValue)
+ 
+            ## Total number of records without filtering
+            cursor.execute("select count(*) as allcount from readings r INNER JOIN user u ON u.id=r.submitted_by WHERE u.username='{}'".format(current_user.username))
+            print(current_user.username)
+            print(username)
+            rsallcount = cursor.fetchone()
+            totalRecords = rsallcount['allcount']
+            print(totalRecords) 
+ 
+            ## Total number of records with filtering
+            likeString = "%" + searchValue +"%"
+            cursor.execute("SELECT count(*) as allcount from readings r INNER JOIN user u ON u.id=r.submitted_by WHERE r.timestamp LIKE '{}' OR r.username LIKE '{}' OR r.meter_reading LIKE '{}' AND u.username='{}'".format(likeString, likeString, likeString,username))
+            rsallcount = cursor.fetchone()
+            totalRecordwithFilter = rsallcount['allcount']
+            print(totalRecordwithFilter)
+
+            ## Sorting values
+            columns=['','timestamp','username','meter_reading','']
+            sort_column = request.args['order[0][column]']
+            sort_mode = request.args['order[0][dir]']
+            print(sort_column)
+            print(sort_mode)
+            ## Fetch records
+            if searchValue=='':
+                if(columns[int(sort_column)]!=''):
+                    cursor.execute("SELECT r.* FROM readings r INNER JOIN user u ON u.id=r.submitted_by WHERE u.username='{}' ORDER BY r.{} {} limit {}, {};".format(username,columns[int(sort_column)],sort_mode,row, rowperpage))
+                    finallist = cursor.fetchall()
+                else:
+                    cursor.execute("SELECT r.* FROM readings r INNER JOIN user u ON u.id=r.submitted_by WHERE u.username='{}' limit {}, {};".format(username,row, rowperpage))
+                    finallist = cursor.fetchall()
+            else:        
+                if(columns[int(sort_column)]!=''):
+                    cursor.execute("SELECT r.* FROM readings r INNER JOIN user u ON u.id=r.submitted_by WHERE (r.timestamp LIKE '{}' OR r.username LIKE '{}' OR r.meter_reading LIKE '{}') AND u.username='{}' ORDER BY r.{} {} limit {}, {};".format(likeString,likeString,likeString,username,columns[int(sort_column)],sort_mode,row, rowperpage))
+                    finallist = cursor.fetchall()
+                else:
+                    cursor.execute("SELECT r.* FROM readings r INNER JOIN user u ON u.id=r.submitted_by WHERE (r.timestamp LIKE '{}' OR r.username LIKE '{}' OR r.meter_reading LIKE '{}') AND u.username='{}' limit {}, {};".format(likeString,likeString,likeString,username,row, rowperpage))
+                    finallist = cursor.fetchall()
+ 
+            data = []
+            i=0
+            for row in finallist:
+                i+=1
+                data.append({
+                    'sno':i,
+                    'date': row['timestamp'].strftime('%Y-%m-%d %H:%M:%S'),
+                    'username': row['username'],
+                    'reading': row['meter_reading'],
+                    'action': row['date'].strftime('%Y-%m-%d')
+                })
+ 
+            print(finallist)
+            response = {
+                'draw': int(draw),
+                'recordsTotal': totalRecords,
+                'recordsFiltered': totalRecordwithFilter,
+                'data': data,
+            }
+            return jsonify(response)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        con.close()
 
 
 # @views.route('/save', methods=['POST'])
