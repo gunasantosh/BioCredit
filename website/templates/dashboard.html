@@ -1,26 +1,85 @@
-{% extends 'base2.html' %} {% block title %} Dashboard | BioCredit &#128594; {% endblock title %} {%
-block content%}
+{% extends 'base2.html' %} {% block title %} Dashboard | BioCredit &#128594; {%
+endblock title %} {% block content%}
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGNsuw4kc63tho_qEVBWP0DLmunaSjzoU&callback=initMap&libraries=&v=weekly"
+  async
+></script>
 <div class="main-profile">
-    <div class="user-details">
-        <div class="user-profile">
-            <div class="user-image">
-                <picture>
-                    <img src="{{ url_for('static', filename='images/user-icon.png') }}" alt="Profile-picture" width="100px">
-                </picture>
-            </div>
-            <div class="user-general-details">
-                <p><strong>User Name :</strong> &nbsp; {{current_user.username}}</p>
-                <p><strong>Name :</strong> &nbsp; {{current_user.name}}</p>
-                <p><strong>Address :</strong> &nbsp; {{current_user.address}}</p>
-                <p><strong>Meter Location :</strong> &nbsp; {{current_user.latitude}}, {{current_user.longitude}}</p>
-            </div>
-        </div>
-        <div class="user-qr">
-            <img src="{{qrcode.svg_data_uri(dark='#01fe34',light="#000000", scale=4)}}" alt="User-QR">
-        </div>
+  <div class="user-details">
+    <div class="user-profile">
+      <div class="user-image">
+        <picture>
+          <img
+            src="{{ url_for('static', filename='images/user-icon.png') }}"
+            alt="Profile-picture"
+            width="100px"
+          />
+        </picture>
+      </div>
+      <div class="user-general-details">
+        <p><strong>User Name :</strong> &nbsp; {{current_user.username}}</p>
+        <p><strong>Name :</strong> &nbsp; {{current_user.name}}</p>
+        <p><strong>Address :</strong> &nbsp; {{current_user.address}}</p>
+        <p>
+          <strong>Meter Location :</strong> &nbsp; {{current_user.latitude}},
+          {{current_user.longitude}}
+        </p>
+      </div>
     </div>
-    <div class="user-location">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15266.631003825816!2d82.2474639!3d16.942166399999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a3827c170cd5615%3A0x7357aca9c7668c14!2sPublic%20Food%20Shelter!5e0!3m2!1sen!2sin!4v1693560785040!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="user-qr">
+      <img src="{{qrcode.svg_data_uri(dark='#01fe34',light="#000000",
+      scale=4)}}" alt="User-QR">
     </div>
+  </div>
+  <div id="mapdiv" class="user-location">
+
+  </div>
+  <script>
+
+    // Initialize and add the map
+    function initMap() {
+
+        // The location coordinates
+        const coordinates = {
+            lat: {{current_user.latitude}},
+            lng: {{current_user.longitude}}
+        };
+
+        // Create the map, centered at location coordinates
+        const map = new google.maps.Map(
+                document.getElementById("mapdiv"), {
+
+            // Set the zoom of the map
+            zoom: 15,
+            center: coordinates,
+        });
+
+        const marker = new google.maps.Marker({
+          position: coordinates,
+          map,
+          title: "{{current_user.username}}'s Meter Location",
+        });
+
+        let infowindow = new google.maps.InfoWindow({
+          content: "<b>{{current_user.username}}'s Meter Location</b>"
+        });
+        
+        google.maps.event.addListener(marker, "click", function() {
+          console.log(infowindow);
+          //infowindow.open(map,marker);
+          if(infowindow.anchor===undefined){
+            infowindow.open(map,marker);
+
+          }else{
+            infowindow.close();
+            infowindow = new google.maps.InfoWindow({
+              content: "<b>{{current_user.username}}'s Meter Location</b>"
+            });
+          }
+          console.log(infowindow);
+
+        });
+    }
+</script>
 </div>
 {% endblock content %}
