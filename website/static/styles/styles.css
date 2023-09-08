@@ -868,12 +868,30 @@ div.content {
 }
 
 .user-location{
-    background-color: #000;
-    color: #01fe34;
-    border: 1px solid #000;
+    border: 4px solid #000;
     border-radius: 6px;
     padding: 20px 40px;
     width: 100%;
-    height: 400px;
+    height: 340px;
     margin: auto;
+}
+
+@media screen and (width <= 500px){
+    .user-details{
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 20px;
+    }
+
+    body{
+        padding-top: 50px;
+    }
+
+    .user-qr{
+        width: 100%;
+    }
+
+    .user-profile{
+        width: 100%;
+    }
 }

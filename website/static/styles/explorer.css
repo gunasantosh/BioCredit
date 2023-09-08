@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background: linear-gradient(180deg,#01FE43,#53c044);
+    padding-top: 100px;
+}
+
+header nav{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: black;
+    box-shadow: 2px 0px 10px black;
+}
+
+nav .logo h1{
+    color: #ffffff;
+}
+
+.first{
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    margin: auto;
+    padding: 10px;
+}
+
+.total-hashes{
+    display: flex;
+    flex-direction: row;
+    background-color: black;
+    color: #01FE43;
+    border: 1px solid #01FE43;
+    padding: 20px;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.sub-first{
+    background-color: black;
+    color: #01FE43;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.one,.two,.three,.four{
+    padding: 10px;
+    background-color: black;
+    color: #01FE43;
+    border: 1px solid #01FE43;
+}
+
+
+.graph{
+    background-color: black;
+    color: #01FE43;
+    border: 1px solid #01FE43;
+    padding: 20px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    width: 40%;
+}
+
+.second{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.totalhashes{
+    background-color: black;
+    color: #01FE43;
+    border: 1px solid #01FE43;
+    padding: 20px 10px;
+    border-radius: 6px;
+    width: 40%;
+}
+
+.updated-locations{
+    background-color: black;
+    color: #01FE43;
+    border: 1px solid #01FE43;
+    padding: 20px 10px;
+    border-radius: 6px;
+    width: 40%;
+}
+
+footer .footer{
+    background-color: black;
+    color:#01FE43;
+    text-align: center;
+    padding: 20px 40px;
+    margin-top: 303.5px;
+}
