@@ -187,7 +187,15 @@ footer .footer{
 }
 
 .hamburger-menu #fa,#fa-cross{
-    transition: all .4s;
+    transition: all .3s;
+}
+
+.hamburger-menu #fa:hover{
+    cursor: pointer;
+}
+
+.hamburger-menu .fa-xmark:hover{
+    cursor: pointer;
 }
 
 #overlay{
