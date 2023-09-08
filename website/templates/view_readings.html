@@ -32,15 +32,36 @@ endblock title %} {% block content %}
           d.username = "{{username}}";
         },
       },
+      {% if role!='user' %}
       columns: [
         { data: "sno" },
         { data: "date" },
         { data: "username" },
         { data: "reading" },
-        { data: "action" },
+        { data: "action",
+      render: function(data,type,row){
+        return `<a target='_blank' href='http://127.0.0.1:5000/view_mimage?date=`+data+`&username=`+row.username+`'>View Image</a>`;
+      }
+      },
       ],
       columnDefs: [{ orderable: false, targets: 0 },{ orderable: false, targets: 4 }],
-      order: [[1, "asc"]],
+      order: [[1, "asc"]]
+      {% else %}
+      columns: [
+      { data: "sno" },
+      { data: "date" },
+      { data: "reading" },
+      { data: "submitted_by" },
+      { data: "action",
+    render: function(data,type,row){
+      return `<a target='_blank' href='http://127.0.0.1:5000/view_mimage?date=`+data+`&username={{username}}'>View Image</a>`;
+    }
+    },
+    ],
+    columnDefs: [{ orderable: false, targets: 0 },{ orderable: false, targets: 4 }],
+    order: [[1, "asc"]]
+      {% endif %}
+
     });
   });
 </script>

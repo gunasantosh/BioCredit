@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import render_template, jsonify, request
+from flask import render_template, jsonify, request, redirect
 from flask_login import login_required, current_user
 from .models import User
 import mysql.connector
@@ -47,7 +47,6 @@ def capture_readings():
         q="SELECT * FROM user WHERE role='user' AND 0 IN (SELECT COUNT(*) FROM readings WHERE readings.username=user.username AND timestamp>='{} 00:00:00' AND timestamp<='{} 23:59:59')".format(today,today)
         cursor.execute(q)
         ress=cursor.fetchall()
-        print(ress)
         if(len(ress)>0):
             user_list=ress
         else:
@@ -86,6 +85,21 @@ def view_readings():
 
     return render_template("view_readings.html",th=th,role=role,username=username)
 
+@views.route("/view_mimage",methods=['GET'])
+def view_mimage():
+    if(request.args['date'] not in ['',None] and request.args['username'] not in ['',None]):
+        con = mysql.connector.connect(host="localhost", user="root", password="", database="dapp")
+        cursor = con.cursor(buffered=False,dictionary=True)
+        q="SELECT image FROM readings WHERE username='{}' AND date='{}'".format(request.args['username'],request.args['date'])
+        cursor.execute(q)
+        res=cursor.fetchall()
+        if(len(res)>0):
+            return "<body style='display:block;background-color:black;height:100%;margin:0;'><img style='margin:auto;display:block;cursor:zoom-in;-webkit-user-select: none;' src='"+res[0]['image']+"'></img></body>"
+        else:
+            return 'Image not available'
+    else:
+        return "Parameters Required"
+
 @views.route("/modReadings",methods=["POST","GET"])
 def modReadings():
     try:
@@ -97,33 +111,25 @@ def modReadings():
             rowperpage = int(request.args['length'])
             searchValue = request.args["search[value]"]
             username=request.args['username']
-            print(username)
-            print(draw)
-            print(row)
-            print(rowperpage)
-            print(searchValue)
- 
+
             ## Total number of records without filtering
             cursor.execute("select count(*) as allcount from readings r INNER JOIN user u ON u.id=r.submitted_by WHERE u.username='{}'".format(current_user.username))
-            print(current_user.username)
-            print(username)
             rsallcount = cursor.fetchone()
             totalRecords = rsallcount['allcount']
-            print(totalRecords) 
  
             ## Total number of records with filtering
-            likeString = "%" + searchValue +"%"
-            cursor.execute("SELECT count(*) as allcount from readings r INNER JOIN user u ON u.id=r.submitted_by WHERE r.timestamp LIKE '{}' OR r.username LIKE '{}' OR r.meter_reading LIKE '{}' AND u.username='{}'".format(likeString, likeString, likeString,username))
-            rsallcount = cursor.fetchone()
-            totalRecordwithFilter = rsallcount['allcount']
-            print(totalRecordwithFilter)
+            if(searchValue!=''):
+                likeString = "%" + searchValue +"%"
+                cursor.execute("SELECT count(*) as allcount from readings r INNER JOIN user u ON u.id=r.submitted_by WHERE (r.timestamp LIKE '{}' OR r.username LIKE '{}' OR r.meter_reading LIKE '{}') AND u.username='{}'".format(likeString, likeString, likeString,username))
+                rsallcount = cursor.fetchone()
+                totalRecordwithFilter = rsallcount['allcount']
+            else:
+                totalRecordwithFilter=totalRecords
 
             ## Sorting values
             columns=['','timestamp','username','meter_reading','']
             sort_column = request.args['order[0][column]']
             sort_mode = request.args['order[0][dir]']
-            print(sort_column)
-            print(sort_mode)
             ## Fetch records
             if searchValue=='':
                 if(columns[int(sort_column)]!=''):
@@ -152,7 +158,77 @@ def modReadings():
                     'action': row['date'].strftime('%Y-%m-%d')
                 })
  
-            print(finallist)
+            response = {
+                'draw': int(draw),
+                'recordsTotal': totalRecords,
+                'recordsFiltered': totalRecordwithFilter,
+                'data': data,
+            }
+            return jsonify(response)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close() 
+        con.close()
+
+@views.route("/userReadings",methods=["POST","GET"])
+def userReadings():
+    try:
+        con = mysql.connector.connect(host="localhost", user="root", password="", database="dapp")
+        cursor = con.cursor(buffered=False,dictionary=True)
+        if request.method == 'GET':
+            draw = request.args.get('draw')
+            row = int(request.args['start'])
+            rowperpage = int(request.args['length'])
+            searchValue = request.args["search[value]"]
+            username=request.args['username']
+
+            ## Total number of records without filtering
+            cursor.execute("select count(*) as allcount from readings r INNER JOIN user u ON u.id=r.submitted_by WHERE r.username='{}'".format(username))
+            rsallcount = cursor.fetchone()
+            totalRecords = rsallcount['allcount']
+ 
+            ## Total number of records with filtering
+            if(searchValue!=''):
+                likeString = "%" + searchValue +"%"
+                cursor.execute("SELECT count(*) as allcount from readings r INNER JOIN user u ON u.id=r.submitted_by WHERE (r.timestamp LIKE '{}' OR u.username LIKE '{}' OR r.meter_reading LIKE '{}') AND r.username='{}'".format(likeString, likeString, likeString,username))
+                rsallcount = cursor.fetchone()
+                totalRecordwithFilter = rsallcount['allcount']
+            else:
+                totalRecordwithFilter=totalRecords
+
+            ## Sorting values
+            columns=['','r.timestamp','r.meter_reading','u.username','']
+            sort_column = request.args['order[0][column]']
+            sort_mode = request.args['order[0][dir]']
+            ## Fetch records
+            if searchValue=='':
+                if(columns[int(sort_column)]!=''):
+                    cursor.execute("SELECT * FROM readings r INNER JOIN user u ON u.id=r.submitted_by WHERE r.username='{}' ORDER BY {} {} limit {}, {};".format(username,columns[int(sort_column)],sort_mode,row, rowperpage))
+                    finallist = cursor.fetchall()
+                else:
+                    cursor.execute("SELECT * FROM readings r INNER JOIN user u ON u.id=r.submitted_by WHERE r.username='{}' limit {}, {};".format(username,row, rowperpage))
+                    finallist = cursor.fetchall()
+            else:        
+                if(columns[int(sort_column)]!=''):
+                    cursor.execute("SELECT * FROM readings r INNER JOIN user u ON u.id=r.submitted_by WHERE (r.timestamp LIKE '{}' OR u.username LIKE '{}' OR r.meter_reading LIKE '{}') AND r.username='{}' ORDER BY {} {} limit {}, {};".format(likeString,likeString,likeString,username,columns[int(sort_column)],sort_mode,row, rowperpage))
+                    finallist = cursor.fetchall()
+                else:
+                    cursor.execute("SELECT * FROM readings r INNER JOIN user u ON u.id=r.submitted_by WHERE (r.timestamp LIKE '{}' OR u.username LIKE '{}' OR r.meter_reading LIKE '{}') AND r.username='{}' limit {}, {};".format(likeString,likeString,likeString,username,row, rowperpage))
+                    finallist = cursor.fetchall()
+ 
+            data = []
+            i=0
+            for row in finallist:
+                i+=1
+                data.append({
+                    'sno':i,
+                    'date': row['timestamp'].strftime('%Y-%m-%d %H:%M:%S'),
+                    'submitted_by': row['username'],
+                    'reading': row['meter_reading'],
+                    'action': row['date'].strftime('%Y-%m-%d')
+                })
+ 
             response = {
                 'draw': int(draw),
                 'recordsTotal': totalRecords,
@@ -217,13 +293,7 @@ def process_form():
             }
         )
 
-    print(res)
-    
-
-    print(current_location)
-    print(user_location)
     distance = geodesic(current_location, user_location).m
-    print(distance)
     if distance <= (float(accuracy) + float(user_accuracy) + 200):
         today = datetime.today().strftime("%Y-%m-%d")
         try:
