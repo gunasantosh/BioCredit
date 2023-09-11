@@ -1,0 +1,9 @@
+cryptography==41.0.3
+Flask==2.3.1
+Flask_Login==0.6.2
+flask_sqlalchemy==3.1.0
+geopy==2.4.0
+mysql_connector_repackaged==0.3.1
+segno==1.5.2
+SQLAlchemy==2.0.20
+Werkzeug==2.3.2
