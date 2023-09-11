@@ -212,11 +212,18 @@ form{
     
 }
 
+#cameraPreview{
+    width:auto;
+}
+
 
 @media (width <= 500px){
-    .container{
-        width: 70%;
-        
+    #cameraContainer{
+        width: 100%;
+    }
+
+    #cameraPreview{
+        width: 100%;
     }
 
     .container-1{
@@ -369,6 +376,7 @@ b[role='presentation']{
     background-color: black;
     box-shadow: 2px 0px 10px black;
     display: none;
+    z-index: 1;
 }
 
 .mobile-menu .menu{
@@ -422,6 +430,7 @@ div.content {
 }
 
 .off-canvas{
+    top:0;
     width: auto;
     position: fixed;
     height: 100vh;
@@ -647,7 +656,7 @@ div.content {
 }
 
 #imageCanvas2{
-    width: 50%;
+    width: auto;
     margin: auto;
     padding: 6px;
     border: 1px solid #01FE43;
@@ -712,6 +721,10 @@ div.content {
 @media (width <= 500px){
     .user_form{
         width: 90%;
+    }
+
+    #imageCanvas2{
+        width:100%;
     }
 }
 
@@ -894,4 +907,48 @@ div.content {
     .user-profile{
         width: 100%;
     }
+}
+
+/* datatables */
+td a{
+    color: #212529;
+}
+
+/* qr modal */
+#qrmodal .modal-title{
+    color:#01FE43;
+}
+
+#qrmodal .modal-header .btn-close{
+    background-color: #01FE43;
+    opacity: 1;
+}
+
+#qrmodal #reader{
+    background-color: #01FE43;
+    width:500px;
+}
+
+@media screen and (width <= 500px){
+    #qrmodal #reader{
+        width:auto;
+    }
+}
+
+#qrmodal #reader button{
+    border: 1px solid var(--textcolor);
+    border-radius: 5px;
+    background-color: var(--textcolor);
+    font-size: 20px;
+    color: var(--cbgcolor);
+    transition: .2s;
+}
+
+#qrmodal #reader button:hover{
+    cursor: pointer;
+    border: 1px solid var(--bgcolor);
+    border-radius: 5px;
+    background-color: var(--bgcolor);
+    color: var(--cbgcolor);
+    box-shadow: 1px 1px 10px var(--cbgcolor);
 }

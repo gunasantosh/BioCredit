@@ -14,8 +14,9 @@ block content %}
     <li id="dropdown_">
       <select name="selectedUser" id="selectedUser">
         {% if user_list|length>0 %}
+        <option value=''>Select an User</option>
         {% for user in user_list %}
-        <option value="{{ user.username }}">{{ user.username }}</option>
+        <option value="{{ user.username }}" {% if selected!=None %} {% if selected==user.username %} selected {% endif %} {% endif %}>{{ user.username }}</option>
         {% endfor %}
         {% else %}
         <option value="">All User's Readings are Taken For This Day.!!</option>
@@ -75,7 +76,7 @@ block content %}
         </div>
         <div class="modal-body">
           <div class="container" style="margin: auto" id="cameraContainer">
-            <video id="cameraPreview" style="display: block" autoplay></video>
+            <video id="cameraPreview" style="display: block;margin:auto;" autoplay></video>
           </div>
           <canvas id="imageCanvas2" style="display: none"></canvas>
         </div>
@@ -279,14 +280,14 @@ block content %}
           }
 
         $.ajax({
-          url:"http://127.0.0.1:5000/process_form",
+          url:"https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/process_form",
           type:"POST",
           contentType: 'application/json;charset=UTF-8',
           data:JSON.stringify({'reading':reading.value,'imgurl':captured_image.value,'selectedUser':selecteduser.value,'latitude':latitude,'longitude':longitude,'accuracy':accuracy}),
 
           success:function(data){
             if(data.statusCode===200){
-              window.location.href="http://127.0.0.1:5000/capture_readings?msg="+encodeURIComponent(data.msg);
+              window.location.href="https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/capture_readings?msg="+encodeURIComponent(data.msg);
             }
             else{
               createtoast(data.msg);

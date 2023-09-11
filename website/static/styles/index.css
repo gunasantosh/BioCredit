@@ -38,6 +38,9 @@ nav .menu{
     box-shadow: 1px 1px 5px rgb(121, 112, 112);
 }
 
+nav .menu ul{
+    margin:0px;
+}
 nav .menu ul li {
     list-style: none;
     display: inline-block;
@@ -155,7 +158,8 @@ footer .footer{
 }
 
 .off-canvas{
-    width: 50%;
+    top:0;
+    width: auto;
     position: fixed;
     height: 100vh;
     display: none;
@@ -169,6 +173,7 @@ footer .footer{
 
 .off-canvas.is-active{
     display: block;
+    box-shadow: 0 0 0 10000px rgba(0, 0, 0, .50);
 }
 
 .off-canvas h2{
@@ -176,10 +181,29 @@ footer .footer{
     margin-block: 20px;
 }
 
-.off-canvas ul li a{
+.off-canvas ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.off-canvas ul a{
+    transition: all .4s;
+    display: block;
     color: #01FE43;
     text-decoration: none;
-    font-size: 22px;
+    margin: 20px 30px 0px 40px;
+    padding: 8px;
+    text-align: start;
+    font-size: 16px;
+    line-height: normal;
+}
+
+.off-canvas ul a:hover{
+    background-color: #01FE43;
+    color: #000;
+    border-radius: 6px;
+    transform: translate(8px);
 }
 
 .off-canvas ul li{
@@ -399,4 +423,49 @@ footer .footer{
     100% {
         transform: translate(0,0px);
     }
+}
+
+
+/* datatables */
+td a{
+    color: #212529;
+}
+
+/* qr modal */
+#qrmodal .modal-title{
+    color:#01FE43;
+}
+
+#qrmodal .modal-header .btn-close{
+    background-color: #01FE43;
+    opacity: 1;
+}
+
+#qrmodal #reader{
+    background-color: #01FE43;
+    width:500px;
+}
+
+@media screen and (width <= 500px){
+    #qrmodal #reader{
+        width:auto;
+    }
+}
+
+#qrmodal #reader button{
+    border: 1px solid var(--textcolor);
+    border-radius: 5px;
+    background-color: var(--cbgcolor);
+    font-size: 20px;
+    color: var(--bgcolor);
+    transition: .2s;
+}
+
+#qrmodal #reader button:hover{
+    cursor: pointer;
+    border: 1px solid var(--bgcolor);
+    border-radius: 5px;
+    background-color: var(--bgcolor);
+    color: var(--cbgcolor);
+    box-shadow: 1px 1px 10px var(--cbgcolor);
 }

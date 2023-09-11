@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import render_template, jsonify, request, redirect
+from flask import render_template, jsonify, request, redirect,url_for
 from flask_login import login_required, current_user
 from .models import User
 import mysql.connector
@@ -24,22 +24,59 @@ def home():
 @login_required
 def dashboard():
     fernet = Fernet(key)
-    encMessage = fernet.encrypt(current_user.username.encode())
+    encMessage = fernet.encrypt(current_user.username.encode()).decode()
     qrcode = segno.make(
-        "http://127.0.0.1:5000/qr_redirect?secret={}".format(encMessage)
+        "https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/qr_redirect?secret={}".format(encMessage)
     )
     return render_template("dashboard.html", current_user=current_user, qrcode=qrcode)
+
+@views.route('/qr_redirect',methods=["GET"])
+def qr_redirect():
+    con = mysql.connector.connect(
+        host="localhost", user="root", password="", database="dapp"
+    )
+    cursor = con.cursor(buffered=False, dictionary=True)
+    if(request.args['secret']!=None):
+        secret = request.args['secret']
+        fernet = Fernet(key)
+        username = fernet.decrypt(secret).decode()
+        qrcode = segno.make(
+        "https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/qr_redirect?secret={}".format(secret)
+    )
+        user_data=cursor.execute("SELECT * FROM user WHERE username='{}'".format(username))
+        user_data=cursor.fetchall()
+        user_data=user_data[0]
+        if user_data['role'] == "user":
+            th = """<th>S.no</th>
+                <th>Date</th>
+                <th>Reading</th>
+                <th>Taken By</th>
+                <th>Actions</th>"""
+        else:
+            th = """<th>S.no</th>
+                <th>Date</th>
+                <th>Username</th>
+                <th>Reading</th>
+                <th>Actions</th>"""
+        if(current_user.is_authenticated):
+            if(current_user.role=='superuser'):
+                return redirect(url_for('views.capture_readings',selected=username))
+            else:
+                return render_template("external_profile.html",base='base.html',current_user=user_data,qrcode=qrcode,th=th,role=user_data['role'])
+        else:
+            return render_template("external_profile.html",base='base.html',current_user=user_data,qrcode=qrcode,th=th,role=user_data['role'])
 
 
 @views.route("/capture_readings", methods=["POST", "GET"])
 def capture_readings():
     con = mysql.connector.connect(
-        host="localhost", user="root", password="mypassword", database="dapp"
+        host="localhost", user="root", password="", database="dapp"
     )
     cursor = con.cursor(buffered=False, dictionary=True)
     msg = None
     if request.method == "GET":
         msg = request.args.get("msg")
+    selected = request.args.get('selected')
     role = current_user.role
     user_list = None
     flag = True
@@ -65,7 +102,7 @@ def capture_readings():
             flag = False
 
     return render_template(
-        "capture_readings.html", role=role, user_list=user_list, msg=msg, flag=flag
+        "capture_readings.html", role=role, user_list=user_list, msg=msg, flag=flag, selected=selected
     )
 
 
@@ -96,7 +133,7 @@ def view_mimage():
         None,
     ]:
         con = mysql.connector.connect(
-            host="localhost", user="root", password="mypassword", database="dapp"
+            host="localhost", user="root", password="", database="dapp"
         )
         cursor = con.cursor(buffered=False, dictionary=True)
         q = "SELECT image FROM readings WHERE username='{}' AND date='{}'".format(
@@ -120,7 +157,7 @@ def view_mimage():
 def modReadings():
     try:
         con = mysql.connector.connect(
-            host="localhost", user="root", password="mypassword", database="dapp"
+            host="localhost", user="root", password="", database="dapp"
         )
         cursor = con.cursor(buffered=False, dictionary=True)
         if request.method == "GET":
@@ -133,7 +170,7 @@ def modReadings():
             ## Total number of records without filtering
             cursor.execute(
                 "select count(*) as allcount from readings r INNER JOIN user u ON u.id=r.submitted_by WHERE u.username='{}'".format(
-                    current_user.username
+                    username
                 )
             )
             rsallcount = cursor.fetchone()
@@ -236,7 +273,7 @@ def modReadings():
 def userReadings():
     try:
         con = mysql.connector.connect(
-            host="localhost", user="root", password="mypassword", database="dapp"
+            host="localhost", user="root", password="", database="dapp"
         )
         cursor = con.cursor(buffered=False, dictionary=True)
         if request.method == "GET":
@@ -365,7 +402,7 @@ def userReadings():
 @login_required
 def process_form():
     con = mysql.connector.connect(
-        host="localhost", user="root", password="mypassword", database="dapp"
+        host="localhost", user="root", password="", database="dapp"
     )
     cursor = con.cursor(buffered=False, dictionary=True)
     meter_reading = request.json["reading"]

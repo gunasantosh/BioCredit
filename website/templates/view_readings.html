@@ -5,7 +5,7 @@ endblock title %} {% block content %}
   rel="stylesheet"
 />
 <script src="{{url_for('static',filename='dataTables.min.js')}}"></script>
-<h1>View reading</h1>
+<h1 style="margin-top:20px;">View reading</h1>
 <div class="container table-responsive">
   <table id="example" class="display" style="width: 100%">
     <thead>
@@ -40,7 +40,7 @@ endblock title %} {% block content %}
         { data: "reading" },
         { data: "action",
       render: function(data,type,row){
-        return `<a target='_blank' href='http://127.0.0.1:5000/view_mimage?date=`+data+`&username=`+row.username+`'>View Image</a>`;
+        return `<a target='_blank' href='https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/view_mimage?date=`+data+`&username=`+row.username+`'>View Image</a>`;
       }
       },
       ],
@@ -54,7 +54,7 @@ endblock title %} {% block content %}
       { data: "submitted_by" },
       { data: "action",
     render: function(data,type,row){
-      return `<a target='_blank' href='http://127.0.0.1:5000/view_mimage?date=`+data+`&username={{username}}'>View Image</a>`;
+      return `<a target='_blank' href='https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/view_mimage?date=`+data+`&username={{username}}'>View Image</a>`;
     }
     },
     ],
