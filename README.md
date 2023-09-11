@@ -1,10 +1,8 @@
-# dapp
-
 # BioGas Data Collection Blockchain App
 
 ![Project Logo](https://socialify.git.ci/gunasantosh/dapp/image?description=1&font=Bitter&name=1&pattern=Plus&theme=Dark)
 
-Welcome to the BioGas Data Collection Blockchain App repository! This project was developed as part of the Algorand biogas data collection hackathon, aiming to streamline the process of gathering and storing critical biogas data. Our dedicated team of three talented developers, Satish, Guna, and Sandeep, has crafted this innovative solution using a stack of cutting-edge technologies.
+Welcome to the BioGas Data Collection Blockchain App repository! This project was developed as part of the Algorand biogas data collection hackathon, aiming to streamline the process of gathering and storing critical biogas data. Our dedicated team of three talented developers, Satish, Guna, and Sandeep, has crafted this solution using a stack of Web technologies.
 
 ## Project Overview
 
@@ -53,13 +51,9 @@ To get started with the BioGas Data Collection Blockchain App, follow these step
 3. Start the Flask server.
 4. Access the web application in your preferred web browser.
 
-## Contribution Guidelines
-
-We welcome contributions from the open-source community. If you'd like to contribute to this project, please follow our [contribution guidelines](link_to_contributing.md).
-
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](link_to_license.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt) file for details.
 
 ## Acknowledgments
 
@@ -69,8 +63,8 @@ We would like to express our gratitude to the Algorand community and the organiz
 
 If you have any questions, or suggestions, or need assistance, please feel free to reach out to us:
 
-- Satish: [Email](mailto:satish@example.com)
-- Guna: [Email](mailto:guna@example.com)
-- Sandeep: [Email](mailto:sandeep@example.com)
+- Y.Satish: [Email](mailto:satishchandrachowdaryy@mictech.edu.in)
+- B.Guna Sri Rama Santosh: [Email](mailto:gunasantosh999@gmail.com)
+- M.Sandeep varma: [Email](mailto:manthenasandeepvarma766@gmail.com)
 
 Thank you for visiting our repository and for your interest in the BioGas Data Collection Blockchain App! We look forward to your feedback and contributions.
