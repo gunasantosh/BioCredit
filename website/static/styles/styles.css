@@ -21,6 +21,7 @@
 }
 
 body{
+    padding-top: 30px;
     background: var(--bgcolor);
 }
 
