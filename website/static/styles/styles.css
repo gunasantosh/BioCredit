@@ -21,7 +21,6 @@
 }
 
 body{
-    padding-top: 30px;
     background: var(--bgcolor);
 }
 
@@ -137,6 +136,7 @@ form{
     transition: .2s;
 }
 
+
 @media (width <= 500px){
     .container1{
         width: 70%;
@@ -213,6 +213,7 @@ form{
     
 }
 
+
 #cameraPreview{
     width:auto;
 }
@@ -232,12 +233,16 @@ form{
         margin-top: 10px;
     }
 
+    .container1{
+        margin-top: 100px;
+    }
+
     .user-box label{
-        left: 15%;
+        left: 10%;
     }
 
     .user-box input{
-        width: 70%;
+        width: 80%;
     }
 
     .register-box{
@@ -268,6 +273,10 @@ form{
 
 .menu ul li{
     display: inline-block;
+}
+
+.extra{
+    margin-bottom: 40px;
 }
 
 /* Dashboard Navigation */

@@ -1,7 +1,7 @@
-{% extends 'base.html' %} {% block title %}Register | BioCredit &#128594;{% endblock %} {% block
-content%}
-
-<div style="margin-top: -20px;margin-bottom:20px; margin-left: 20px">
+{% extends 'base.html' %} {% block title %}Register | BioCredit &#128594;{%
+endblock %} {% block content%}
+<div class="extra"></div>
+<div style="margin-top: -20px; margin-bottom: 20px; margin-left: 20px">
   <a class="back-btn1" href="{{ url_for('views.home')}}"
     ><i class="fa-solid fa-chevron-left" style="color: #00fe43"></i
     >&nbsp;Back</a
@@ -37,7 +37,7 @@ content%}
         <input type="password" name="password2" required="" />
         <label>Confirm Password :</label>
       </div>
-      <span id="status" data-status style="display:none;"></span>
+      <span id="status" data-status style="display: none"></span>
       <div class="user-box" id="check-box">
         <input type="checkbox" id="check" name="accept" required="" />
         <p>
