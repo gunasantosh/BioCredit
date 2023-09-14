@@ -40,7 +40,7 @@ endblock title %} {% block content %}
         { data: "reading" },
         { data: "action",
       render: function(data,type,row){
-        return `<a target='_blank' href='https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/view_mimage?date=`+data+`&username=`+row.username+`'>View Image</a>`;
+        return `<a target='_blank' href='{{BASE_URL}}view_mimage?date=`+data+`&username=`+row.username+`'>View Image</a>`;
       }
       },
       ],
@@ -54,7 +54,7 @@ endblock title %} {% block content %}
       { data: "submitted_by" },
       { data: "action",
     render: function(data,type,row){
-      return `<a target='_blank' href='https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/view_mimage?date=`+data+`&username={{username}}'>View Image</a>`;
+      return `<a target='_blank' href='{{BASE_URL}}view_mimage?date=`+data+`&username={{username}}'>View Image</a>`;
     }
     },
     ],

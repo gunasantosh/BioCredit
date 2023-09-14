@@ -280,14 +280,14 @@ block content %}
           }
 
         $.ajax({
-          url:"https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/process_form",
+          url:"{{BASE_URL}}process_form",
           type:"POST",
           contentType: 'application/json;charset=UTF-8',
           data:JSON.stringify({'reading':reading.value,'imgurl':captured_image.value,'selectedUser':selecteduser.value,'latitude':latitude,'longitude':longitude,'accuracy':accuracy}),
 
           success:function(data){
             if(data.statusCode===200){
-              window.location.href="https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/capture_readings?msg="+encodeURIComponent(data.msg);
+              window.location.href="{{BASE_URL}}capture_readings?msg="+encodeURIComponent(data.msg);
             }
             else{
               createtoast(data.msg);

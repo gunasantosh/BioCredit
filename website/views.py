@@ -8,6 +8,7 @@ from datetime import datetime
 from geopy.distance import geodesic
 import segno
 from cryptography.fernet import Fernet
+from website import db_host,db_name,db_password,db_user,BASE_URL
 
 
 views = Blueprint("views", __name__)
@@ -26,14 +27,14 @@ def dashboard():
     fernet = Fernet(key)
     encMessage = fernet.encrypt(current_user.username.encode()).decode()
     qrcode = segno.make(
-        "https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/qr_redirect?secret={}".format(encMessage)
+        "{}qr_redirect?secret={}".format(BASE_URL,encMessage)
     )
     return render_template("dashboard.html", current_user=current_user, qrcode=qrcode)
 
 @views.route('/qr_redirect',methods=["GET"])
 def qr_redirect():
     con = mysql.connector.connect(
-        host="localhost", user="root", password="", database="dapp"
+        host=db_host , user=db_user, password=db_password, database=db_name
     )
     cursor = con.cursor(buffered=False, dictionary=True)
     if(request.args['secret']!=None):
@@ -41,7 +42,7 @@ def qr_redirect():
         fernet = Fernet(key)
         username = fernet.decrypt(secret).decode()
         qrcode = segno.make(
-        "https://6647-2401-4900-4fe9-ce06-b8fe-b89f-19ad-6422.ngrok-free.app/qr_redirect?secret={}".format(secret)
+        "{}qr_redirect?secret={}".format(BASE_URL,secret)
     )
         user_data=cursor.execute("SELECT * FROM user WHERE username='{}'".format(username))
         user_data=cursor.fetchall()
@@ -70,7 +71,7 @@ def qr_redirect():
 @views.route("/capture_readings", methods=["POST", "GET"])
 def capture_readings():
     con = mysql.connector.connect(
-        host="localhost", user="root", password="", database="dapp"
+        host=db_host , user=db_user, password=db_password, database=db_name
     )
     cursor = con.cursor(buffered=False, dictionary=True)
     msg = None
@@ -133,7 +134,7 @@ def view_mimage():
         None,
     ]:
         con = mysql.connector.connect(
-            host="localhost", user="root", password="", database="dapp"
+        host=db_host , user=db_user, password=db_password, database=db_name
         )
         cursor = con.cursor(buffered=False, dictionary=True)
         q = "SELECT image FROM readings WHERE username='{}' AND date='{}'".format(
@@ -157,7 +158,7 @@ def view_mimage():
 def modReadings():
     try:
         con = mysql.connector.connect(
-            host="localhost", user="root", password="", database="dapp"
+        host=db_host , user=db_user, password=db_password, database=db_name
         )
         cursor = con.cursor(buffered=False, dictionary=True)
         if request.method == "GET":
@@ -273,7 +274,7 @@ def modReadings():
 def userReadings():
     try:
         con = mysql.connector.connect(
-            host="localhost", user="root", password="", database="dapp"
+        host=db_host , user=db_user, password=db_password, database=db_name
         )
         cursor = con.cursor(buffered=False, dictionary=True)
         if request.method == "GET":
@@ -402,7 +403,7 @@ def userReadings():
 @login_required
 def process_form():
     con = mysql.connector.connect(
-        host="localhost", user="root", password="", database="dapp"
+        host=db_host , user=db_user, password=db_password, database=db_name
     )
     cursor = con.cursor(buffered=False, dictionary=True)
     meter_reading = request.json["reading"]
