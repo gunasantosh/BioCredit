@@ -1,0 +1,45 @@
+{
+    "name": "BioCredit",
+    "methods": [
+        {
+            "name": "create",
+            "args": [],
+            "returns": {
+                "type": "void"
+            }
+        },
+        {
+            "name": "add_dayhash",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "date"
+                },
+                {
+                    "type": "string",
+                    "name": "hash"
+                },
+                {
+                    "type": "string",
+                    "name": "cid"
+                }
+            ],
+            "returns": {
+                "type": "string"
+            }
+        },
+        {
+            "name": "get_hash_by_date",
+            "args": [
+                {
+                    "type": "string",
+                    "name": "date"
+                }
+            ],
+            "returns": {
+                "type": "byte[]"
+            }
+        }
+    ],
+    "networks": {}
+}

@@ -1,0 +1,215 @@
+#pragma version 8
+intcblock 0 1
+bytecblock 0x 0x6c617374436964 0x6c61737444617465 0x6c61737448617368 0x6e6f4f6644617973 0x151f7c75 0x6c61737454696d657374616d70
+txna ApplicationArgs 0
+pushbytes 0x4c5c61ba // "create()void"
+==
+bnz main_l6
+txna ApplicationArgs 0
+pushbytes 0xbc175ccd // "add_dayhash(string,string,string)string"
+==
+bnz main_l5
+txna ApplicationArgs 0
+pushbytes 0x333e4a87 // "get_hash_by_date(string)byte[]"
+==
+bnz main_l4
+err
+main_l4:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+txna ApplicationArgs 1
+callsub gethashbydate_2
+store 4
+bytec 5 // 0x151f7c75
+load 4
+concat
+log
+intc_1 // 1
+return
+main_l5:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+!=
+&&
+assert
+txna ApplicationArgs 1
+store 0
+txna ApplicationArgs 2
+store 1
+txna ApplicationArgs 3
+store 2
+load 0
+load 1
+load 2
+callsub adddayhash_1
+store 3
+bytec 5 // 0x151f7c75
+load 3
+concat
+log
+intc_1 // 1
+return
+main_l6:
+txn OnCompletion
+intc_0 // NoOp
+==
+txn ApplicationID
+intc_0 // 0
+==
+&&
+assert
+callsub create_0
+intc_1 // 1
+return
+
+// create
+create_0:
+proto 0 0
+bytec_1 // "lastCid"
+bytec_0 // ""
+app_global_put
+bytec_2 // "lastDate"
+bytec_0 // ""
+app_global_put
+bytec_3 // "lastHash"
+bytec_0 // ""
+app_global_put
+bytec 6 // "lastTimestamp"
+intc_0 // 0
+app_global_put
+bytec 4 // "noOfDays"
+intc_0 // 0
+app_global_put
+retsub
+
+// add_dayhash
+adddayhash_1:
+proto 3 1
+bytec_0 // ""
+txn Sender
+global CreatorAddress
+==
+// unauthorized
+assert
+frame_dig -3
+extract 2 0
+box_len
+store 6
+store 5
+load 6
+bnz adddayhash_1_l2
+frame_dig -3
+extract 2 0
+box_del
+pop
+frame_dig -3
+extract 2 0
+pushbytes 0x7b276c61737444617465273a27 // "{'lastDate':'"
+bytec_2 // "lastDate"
+app_global_get
+concat
+pushbytes 0x272c276c61737448617368273a27 // "','lastHash':'"
+concat
+bytec_3 // "lastHash"
+app_global_get
+concat
+pushbytes 0x272c276c617374436964273a27 // "','lastCid':'"
+concat
+bytec_1 // "lastCid"
+app_global_get
+concat
+pushbytes 0x272c2743757272656e74436964273a27 // "','CurrentCid':'"
+concat
+frame_dig -1
+extract 2 0
+concat
+pushbytes 0x277d // "'}"
+concat
+box_put
+bytec_3 // "lastHash"
+frame_dig -2
+extract 2 0
+app_global_put
+bytec_2 // "lastDate"
+frame_dig -3
+extract 2 0
+app_global_put
+bytec_1 // "lastCid"
+frame_dig -1
+extract 2 0
+app_global_put
+bytec 6 // "lastTimestamp"
+global LatestTimestamp
+app_global_put
+bytec 4 // "noOfDays"
+bytec 4 // "noOfDays"
+app_global_get
+intc_1 // 1
++
+app_global_put
+pushbytes 0x557064617465642048617368205375636365737366756c6c792e2121 // "Updated Hash Successfully.!!"
+frame_bury 0
+frame_dig 0
+len
+itob
+extract 6 0
+frame_dig 0
+concat
+frame_bury 0
+b adddayhash_1_l3
+adddayhash_1_l2:
+pushbytes 0x4861736820416c726561647920457869737473207769746820746869732044617465 // "Hash Already Exists with this Date"
+frame_bury 0
+frame_dig 0
+len
+itob
+extract 6 0
+frame_dig 0
+concat
+frame_bury 0
+adddayhash_1_l3:
+retsub
+
+// get_hash_by_date
+gethashbydate_2:
+proto 1 1
+bytec_0 // ""
+frame_dig -1
+extract 2 0
+box_len
+store 8
+store 7
+load 8
+bnz gethashbydate_2_l2
+pushbytes 0x4e6f204861736820417661696c61626c6520466f72205468697320446174652e2121 // "No Hash Available For This Date.!!"
+frame_bury 0
+frame_dig 0
+len
+itob
+extract 6 0
+frame_dig 0
+concat
+frame_bury 0
+intc_0 // 0
+return
+gethashbydate_2_l2:
+frame_dig -1
+extract 2 0
+box_get
+store 10
+store 9
+load 10
+assert
+load 9
+frame_bury 0
+intc_1 // 1
+return

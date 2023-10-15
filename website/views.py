@@ -4,15 +4,112 @@ from flask_login import login_required, current_user
 from .models import User
 import mysql.connector
 from mysql.connector import errors
-from datetime import datetime
+from datetime import datetime,time
 from geopy.distance import geodesic
 import segno
 from cryptography.fernet import Fernet
+import website.contract.contract as contract
 from website import db_host,db_name,db_password,db_user,BASE_URL
+from beaker import client, sandbox
+from algosdk.v2client import algod
+from algosdk import mnemonic
+from dotenv import load_dotenv
+import os,hashlib,requests,json
+load_dotenv("../.env")
+
+API_KEY=os.getenv('API_KEY')
+PUBLIC_KEY=os.getenv('PUBLIC_KEY')
+MNEMONIC=os.getenv('MNEMONIC')
+PINATA_KEY=os.getenv('PINATA_KEY')
+PINATA_SECRET_KEY=os.getenv('PINATA_SECRET_KEY')
 
 
 views = Blueprint("views", __name__)
 key = b"Jxb-gEda5CtPcq-z2oiCDbIYzUbe9C_ooa_CTl_QCEs="
+
+
+def hashTuple(tup:tuple) -> str:
+    tuple_str = str(tup)
+    hash_object = hashlib.sha256()
+    hash_object.update(tuple_str.encode('utf-8'))
+    hash_hex = hash_object.hexdigest()
+    return hash_hex
+
+def pin_json(json_):
+    url = "https://api.pinata.cloud/pinning/pinJSONToIPFS"
+    res=dict()
+    res['pinataContent']=json_
+    payload = json.dumps(res)
+    print('apikey',API_KEY)
+    print(type(PINATA_KEY))
+    headers = {
+    'Content-Type': 'application/json',
+    'pinata_api_key': PINATA_KEY,
+    'pinata_secret_api_key': PINATA_SECRET_KEY 
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    return json.loads(response.text)
+
+
+def is_time_between(start_time, end_time, check_time=None):
+    # If check time is not given, default to current time
+    check_time = check_time or datetime.now().time()
+    if start_time < end_time:
+        return start_time <= check_time <= end_time
+    else:  # crosses midnight
+        return check_time >= start_time or check_time <= end_time
+
+# Check if current time is between 23:49 and 23:59
+print(is_time_between(time(23,49), time(23,59)))
+
+@views.route("/send_hash",methods=['GET'])
+def send_hash():
+    if(is_time_between(time(23,49), time(23,59))):
+        con = mysql.connector.connect(
+            host=db_host , user=db_user, password=db_password, database=db_name
+        )
+        cursor = con.cursor(buffered=False, dictionary=True)
+        today=datetime.today().strftime("%Y-%m-%d")
+        q="SELECT * FROM readings WHERE date='{}' ORDER BY timestamp ASC".format(today)
+        cursor.execute(q)
+        rows=cursor.fetchall()
+        if(len(rows)>0):
+            acct=sandbox.SandboxAccount(address=os,private_key=mnemonic.to_private_key(MNEMONIC))
+            algod_client = algod.AlgodClient('', 'https://testnet-algorand.api.purestake.io/ps2', {"X-API-Key": API_KEY})
+            app_client = client.ApplicationClient(
+                algod_client, contract.app, signer=acct.signer,app_id=433509059
+            )
+            global_state=app_client.get_global_state()
+            lastHash = global_state['lastHash']
+            json={"date":today,"lastHash":lastHash,"entries":[]}
+            overall_tup = [lastHash]
+            for row in rows:
+                tupl = tuple([row['username'],row['date'],row['timestamp'],row['meter_reading'],row['image'],row['submitted_by']])
+                hassh = hashTuple(tupl)
+                json['entries'].append({row['username']:hassh})
+                overall_tup.append(hassh)
+            overall_hash = hashTuple(tuple(overall_tup))
+            json['overall_hash']=overall_hash
+            pin_res=pin_json(json)
+            if('IpfsHash' in pin_res.keys()):
+                cid=pin_res['IpfsHash']
+                boxes=[(app_client.app_id,today)]
+                res = app_client.call(contract.add_dayhash,boxes=boxes,date=today,hash=overall_hash,cid=cid)
+                if(res.return_value=="Updated Hash Successfully.!!"):
+                    return jsonify({"statusCode":200,"msg":"success"})
+                else:
+                    return jsonify({"statusCode":400,"msg":"Hash Already Updated.!!"})
+            else:
+                return jsonify({"statusCode":500,"msg":"Pinning Hashes To IPFS Failed",'r':pin_res})
+        else:
+            return jsonify({"statusCode":202,"msg":"No Entries Available To Update Hash"})
+    else:
+        return jsonify({"statusCode":400,"msg":"This API is accessible from 23:49 PM to 23:59 PM."})
+
+
+
 
 
 @views.route("/")

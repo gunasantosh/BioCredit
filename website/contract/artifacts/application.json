@@ -1,0 +1,115 @@
+{
+    "hints": {
+        "create()void": {
+            "call_config": {
+                "no_op": "CREATE"
+            }
+        },
+        "add_dayhash(string,string,string)string": {
+            "call_config": {
+                "no_op": "CALL"
+            }
+        },
+        "get_hash_by_date(string)byte[]": {
+            "call_config": {
+                "no_op": "CALL"
+            }
+        }
+    },
+    "source": {
+        "approval": "I3ByYWdtYSB2ZXJzaW9uIDgKaW50Y2Jsb2NrIDAgMQpieXRlY2Jsb2NrIDB4IDB4NmM2MTczNzQ0MzY5NjQgMHg2YzYxNzM3NDQ0NjE3NDY1IDB4NmM2MTczNzQ0ODYxNzM2OCAweDZlNmY0ZjY2NDQ2MTc5NzMgMHgxNTFmN2M3NSAweDZjNjE3Mzc0NTQ2OTZkNjU3Mzc0NjE2ZDcwCnR4bmEgQXBwbGljYXRpb25BcmdzIDAKcHVzaGJ5dGVzIDB4NGM1YzYxYmEgLy8gImNyZWF0ZSgpdm9pZCIKPT0KYm56IG1haW5fbDYKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMApwdXNoYnl0ZXMgMHhiYzE3NWNjZCAvLyAiYWRkX2RheWhhc2goc3RyaW5nLHN0cmluZyxzdHJpbmcpc3RyaW5nIgo9PQpibnogbWFpbl9sNQp0eG5hIEFwcGxpY2F0aW9uQXJncyAwCnB1c2hieXRlcyAweDMzM2U0YTg3IC8vICJnZXRfaGFzaF9ieV9kYXRlKHN0cmluZylieXRlW10iCj09CmJueiBtYWluX2w0CmVycgptYWluX2w0Ogp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CiYmCmFzc2VydAp0eG5hIEFwcGxpY2F0aW9uQXJncyAxCmNhbGxzdWIgZ2V0aGFzaGJ5ZGF0ZV8yCnN0b3JlIDQKYnl0ZWMgNSAvLyAweDE1MWY3Yzc1CmxvYWQgNApjb25jYXQKbG9nCmludGNfMSAvLyAxCnJldHVybgptYWluX2w1Ogp0eG4gT25Db21wbGV0aW9uCmludGNfMCAvLyBOb09wCj09CnR4biBBcHBsaWNhdGlvbklECmludGNfMCAvLyAwCiE9CiYmCmFzc2VydAp0eG5hIEFwcGxpY2F0aW9uQXJncyAxCnN0b3JlIDAKdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgpzdG9yZSAxCnR4bmEgQXBwbGljYXRpb25BcmdzIDMKc3RvcmUgMgpsb2FkIDAKbG9hZCAxCmxvYWQgMgpjYWxsc3ViIGFkZGRheWhhc2hfMQpzdG9yZSAzCmJ5dGVjIDUgLy8gMHgxNTFmN2M3NQpsb2FkIDMKY29uY2F0CmxvZwppbnRjXzEgLy8gMQpyZXR1cm4KbWFpbl9sNjoKdHhuIE9uQ29tcGxldGlvbgppbnRjXzAgLy8gTm9PcAo9PQp0eG4gQXBwbGljYXRpb25JRAppbnRjXzAgLy8gMAo9PQomJgphc3NlcnQKY2FsbHN1YiBjcmVhdGVfMAppbnRjXzEgLy8gMQpyZXR1cm4KCi8vIGNyZWF0ZQpjcmVhdGVfMDoKcHJvdG8gMCAwCmJ5dGVjXzEgLy8gImxhc3RDaWQiCmJ5dGVjXzAgLy8gIiIKYXBwX2dsb2JhbF9wdXQKYnl0ZWNfMiAvLyAibGFzdERhdGUiCmJ5dGVjXzAgLy8gIiIKYXBwX2dsb2JhbF9wdXQKYnl0ZWNfMyAvLyAibGFzdEhhc2giCmJ5dGVjXzAgLy8gIiIKYXBwX2dsb2JhbF9wdXQKYnl0ZWMgNiAvLyAibGFzdFRpbWVzdGFtcCIKaW50Y18wIC8vIDAKYXBwX2dsb2JhbF9wdXQKYnl0ZWMgNCAvLyAibm9PZkRheXMiCmludGNfMCAvLyAwCmFwcF9nbG9iYWxfcHV0CnJldHN1YgoKLy8gYWRkX2RheWhhc2gKYWRkZGF5aGFzaF8xOgpwcm90byAzIDEKYnl0ZWNfMCAvLyAiIgp0eG4gU2VuZGVyCmdsb2JhbCBDcmVhdG9yQWRkcmVzcwo9PQovLyB1bmF1dGhvcml6ZWQKYXNzZXJ0CmZyYW1lX2RpZyAtMwpleHRyYWN0IDIgMApib3hfbGVuCnN0b3JlIDYKc3RvcmUgNQpsb2FkIDYKYm56IGFkZGRheWhhc2hfMV9sMgpmcmFtZV9kaWcgLTMKZXh0cmFjdCAyIDAKYm94X2RlbApwb3AKZnJhbWVfZGlnIC0zCmV4dHJhY3QgMiAwCnB1c2hieXRlcyAweDdiMjc2YzYxNzM3NDQ0NjE3NDY1MjczYTI3IC8vICJ7J2xhc3REYXRlJzonIgpieXRlY18yIC8vICJsYXN0RGF0ZSIKYXBwX2dsb2JhbF9nZXQKY29uY2F0CnB1c2hieXRlcyAweDI3MmMyNzZjNjE3Mzc0NDg2MTczNjgyNzNhMjcgLy8gIicsJ2xhc3RIYXNoJzonIgpjb25jYXQKYnl0ZWNfMyAvLyAibGFzdEhhc2giCmFwcF9nbG9iYWxfZ2V0CmNvbmNhdApwdXNoYnl0ZXMgMHgyNzJjMjc2YzYxNzM3NDQzNjk2NDI3M2EyNyAvLyAiJywnbGFzdENpZCc6JyIKY29uY2F0CmJ5dGVjXzEgLy8gImxhc3RDaWQiCmFwcF9nbG9iYWxfZ2V0CmNvbmNhdApwdXNoYnl0ZXMgMHgyNzJjMjc0Mzc1NzI3MjY1NmU3NDQzNjk2NDI3M2EyNyAvLyAiJywnQ3VycmVudENpZCc6JyIKY29uY2F0CmZyYW1lX2RpZyAtMQpleHRyYWN0IDIgMApjb25jYXQKcHVzaGJ5dGVzIDB4Mjc3ZCAvLyAiJ30iCmNvbmNhdApib3hfcHV0CmJ5dGVjXzMgLy8gImxhc3RIYXNoIgpmcmFtZV9kaWcgLTIKZXh0cmFjdCAyIDAKYXBwX2dsb2JhbF9wdXQKYnl0ZWNfMiAvLyAibGFzdERhdGUiCmZyYW1lX2RpZyAtMwpleHRyYWN0IDIgMAphcHBfZ2xvYmFsX3B1dApieXRlY18xIC8vICJsYXN0Q2lkIgpmcmFtZV9kaWcgLTEKZXh0cmFjdCAyIDAKYXBwX2dsb2JhbF9wdXQKYnl0ZWMgNiAvLyAibGFzdFRpbWVzdGFtcCIKZ2xvYmFsIExhdGVzdFRpbWVzdGFtcAphcHBfZ2xvYmFsX3B1dApieXRlYyA0IC8vICJub09mRGF5cyIKYnl0ZWMgNCAvLyAibm9PZkRheXMiCmFwcF9nbG9iYWxfZ2V0CmludGNfMSAvLyAxCisKYXBwX2dsb2JhbF9wdXQKcHVzaGJ5dGVzIDB4NTU3MDY0NjE3NDY1NjQyMDQ4NjE3MzY4MjA1Mzc1NjM2MzY1NzM3MzY2NzU2YzZjNzkyZTIxMjEgLy8gIlVwZGF0ZWQgSGFzaCBTdWNjZXNzZnVsbHkuISEiCmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMApsZW4KaXRvYgpleHRyYWN0IDYgMApmcmFtZV9kaWcgMApjb25jYXQKZnJhbWVfYnVyeSAwCmIgYWRkZGF5aGFzaF8xX2wzCmFkZGRheWhhc2hfMV9sMjoKcHVzaGJ5dGVzIDB4NDg2MTczNjgyMDQxNmM3MjY1NjE2NDc5MjA0NTc4Njk3Mzc0NzMyMDc3Njk3NDY4MjA3NDY4Njk3MzIwNDQ2MTc0NjUgLy8gIkhhc2ggQWxyZWFkeSBFeGlzdHMgd2l0aCB0aGlzIERhdGUiCmZyYW1lX2J1cnkgMApmcmFtZV9kaWcgMApsZW4KaXRvYgpleHRyYWN0IDYgMApmcmFtZV9kaWcgMApjb25jYXQKZnJhbWVfYnVyeSAwCmFkZGRheWhhc2hfMV9sMzoKcmV0c3ViCgovLyBnZXRfaGFzaF9ieV9kYXRlCmdldGhhc2hieWRhdGVfMjoKcHJvdG8gMSAxCmJ5dGVjXzAgLy8gIiIKZnJhbWVfZGlnIC0xCmV4dHJhY3QgMiAwCmJveF9sZW4Kc3RvcmUgOApzdG9yZSA3CmxvYWQgOApibnogZ2V0aGFzaGJ5ZGF0ZV8yX2wyCnB1c2hieXRlcyAweDRlNmYyMDQ4NjE3MzY4MjA0MTc2NjE2OTZjNjE2MjZjNjUyMDQ2NmY3MjIwNTQ2ODY5NzMyMDQ0NjE3NDY1MmUyMTIxIC8vICJObyBIYXNoIEF2YWlsYWJsZSBGb3IgVGhpcyBEYXRlLiEhIgpmcmFtZV9idXJ5IDAKZnJhbWVfZGlnIDAKbGVuCml0b2IKZXh0cmFjdCA2IDAKZnJhbWVfZGlnIDAKY29uY2F0CmZyYW1lX2J1cnkgMAppbnRjXzAgLy8gMApyZXR1cm4KZ2V0aGFzaGJ5ZGF0ZV8yX2wyOgpmcmFtZV9kaWcgLTEKZXh0cmFjdCAyIDAKYm94X2dldApzdG9yZSAxMApzdG9yZSA5CmxvYWQgMTAKYXNzZXJ0CmxvYWQgOQpmcmFtZV9idXJ5IDAKaW50Y18xIC8vIDEKcmV0dXJu",
+        "clear": "I3ByYWdtYSB2ZXJzaW9uIDgKcHVzaGludCAwIC8vIDAKcmV0dXJu"
+    },
+    "state": {
+        "global": {
+            "num_byte_slices": 3,
+            "num_uints": 2
+        },
+        "local": {
+            "num_byte_slices": 0,
+            "num_uints": 0
+        }
+    },
+    "schema": {
+        "global": {
+            "declared": {
+                "lastCid": {
+                    "type": "bytes",
+                    "key": "lastCid",
+                    "descr": ""
+                },
+                "lastDate": {
+                    "type": "bytes",
+                    "key": "lastDate",
+                    "descr": ""
+                },
+                "lastHash": {
+                    "type": "bytes",
+                    "key": "lastHash",
+                    "descr": ""
+                },
+                "lastTimestamp": {
+                    "type": "uint64",
+                    "key": "lastTimestamp",
+                    "descr": ""
+                },
+                "noOfDays": {
+                    "type": "uint64",
+                    "key": "noOfDays",
+                    "descr": ""
+                }
+            },
+            "reserved": {}
+        },
+        "local": {
+            "declared": {},
+            "reserved": {}
+        }
+    },
+    "contract": {
+        "name": "BioCredit",
+        "methods": [
+            {
+                "name": "create",
+                "args": [],
+                "returns": {
+                    "type": "void"
+                }
+            },
+            {
+                "name": "add_dayhash",
+                "args": [
+                    {
+                        "type": "string",
+                        "name": "date"
+                    },
+                    {
+                        "type": "string",
+                        "name": "hash"
+                    },
+                    {
+                        "type": "string",
+                        "name": "cid"
+                    }
+                ],
+                "returns": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "get_hash_by_date",
+                "args": [
+                    {
+                        "type": "string",
+                        "name": "date"
+                    }
+                ],
+                "returns": {
+                    "type": "byte[]"
+                }
+            }
+        ],
+        "networks": {}
+    },
+    "bare_call_config": {}
+}

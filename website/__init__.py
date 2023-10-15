@@ -7,7 +7,7 @@ db_name='dapp'
 db_user='root'
 db_password=''
 db_host='localhost'
-BASE_URL='http://127.0.0.1/'
+BASE_URL='http://127.0.0.1:5000/'
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -28,7 +28,7 @@ def create_app():
 
     @app.context_processor
     def global_variables():
-        return {"BASE_URL":"http://127.0.0.1/"}
+        return {"BASE_URL":BASE_URL}
 
     from website.views import views
     from website.auth import auth
