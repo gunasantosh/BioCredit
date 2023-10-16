@@ -2,6 +2,7 @@ from flask import Flask
 from os import path
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from datetime import datetime
 
 db_name='dapp'
 db_user='root'
@@ -28,7 +29,12 @@ def create_app():
 
     @app.context_processor
     def global_variables():
-        return {"BASE_URL":BASE_URL}
+        def convertDate(date):
+            return date.strftime('%b %dth, %Y %I:%M %p')
+        def convertD(date):
+            date = datetime.strptime(date, '%Y-%m-%d')
+            return date.strftime('%b %dth, %Y')
+        return {"BASE_URL":BASE_URL,"convertDate":convertDate,"convertD":convertD}
 
     from website.views import views
     from website.auth import auth

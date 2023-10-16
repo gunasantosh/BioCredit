@@ -4,14 +4,14 @@ from flask_login import login_required, current_user
 from .models import User
 import mysql.connector
 from mysql.connector import errors
-from datetime import datetime,time
+from datetime import datetime,time,timedelta
 from geopy.distance import geodesic
 import segno
 from cryptography.fernet import Fernet
 import website.contract.contract as contract
 from website import db_host,db_name,db_password,db_user,BASE_URL
 from beaker import client, sandbox
-from algosdk.v2client import algod
+from algosdk.v2client import algod,indexer
 from algosdk import mnemonic
 from dotenv import load_dotenv
 import os,hashlib,requests,json
@@ -22,6 +22,7 @@ PUBLIC_KEY=os.getenv('PUBLIC_KEY')
 MNEMONIC=os.getenv('MNEMONIC')
 PINATA_KEY=os.getenv('PINATA_KEY')
 PINATA_SECRET_KEY=os.getenv('PINATA_SECRET_KEY')
+APP_ID=433686116
 
 
 views = Blueprint("views", __name__)
@@ -60,13 +61,66 @@ def is_time_between(start_time, end_time, check_time=None):
         return start_time <= check_time <= end_time
     else:  # crosses midnight
         return check_time >= start_time or check_time <= end_time
+    
 
-# Check if current time is between 23:49 and 23:59
-print(is_time_between(time(23,49), time(23,59)))
+# Explorer
+@views.route("/explorer", methods=["GET", "POST"])
+def explorer():
+    now = datetime.now()
+    one_day_ago = now - timedelta(days=1)
+    twenty_eight_days_ago = now - timedelta(days=28)
+    con = mysql.connector.connect(
+            host=db_host , user=db_user, password=db_password, database=db_name
+        )
+    cursor = con.cursor(buffered=False, dictionary=True)
+    print(one_day_ago.strftime('%Y-%m-%d %H:%M:%S'))
+    one_q="SELECT COUNT(*) AS rowcount FROM readings WHERE timestamp>'{}'".format(one_day_ago.strftime('%Y-%m-%d %H:%M:%S'))
+    twenty_q="SELECT COUNT(*) AS rowcount FROM readings WHERE timestamp>'{}'".format(twenty_eight_days_ago.strftime('%Y-%m-%d %H:%M:%S'))
+    cursor.execute(one_q)
+    one_r=cursor.fetchone()
+    last_one_day_count=one_r['rowcount']
+    cursor.execute(twenty_q)
+    twenty_r=cursor.fetchone()
+    last_twenty_eight_days_count=twenty_r['rowcount']
+    one_day_avg_q = "SELECT date, COUNT(*) AS NumberOfRecords FROM readings GROUP BY date"
+    cursor.execute(one_day_avg_q)
+    one_day_avg_res=cursor.fetchall()
+    total=0
+    counter=0
+    for row in one_day_avg_res:
+        total+=row['NumberOfRecords']
+        counter+=1
+    one_day_avg=round(total/counter,2)
+    month_avg_q = "SELECT EXTRACT(MONTH FROM date) AS Month, COUNT(*) AS NumberOfRecords FROM readings GROUP BY EXTRACT(MONTH FROM date)"
+    cursor.execute(month_avg_q)
+    month_avg_res = cursor.fetchall()
+    total=0
+    counter=0
+    for row in month_avg_res:
+        total+=row['NumberOfRecords']
+        counter+=1
+    month_avg = round(total/counter,2)
+    latest_q="SELECT * FROM readings ORDER BY date DESC LIMIT 10"
+    cursor.execute(latest_q)
+    latest_readings=cursor.fetchall()
+    acct=sandbox.SandboxAccount(address=os,private_key=mnemonic.to_private_key(MNEMONIC))
+    algod_client = algod.AlgodClient('', 'https://testnet-algorand.api.purestake.io/ps2', {"X-API-Key": API_KEY})
+    app_client = client.ApplicationClient(
+                algod_client, contract.app, signer=acct.signer,app_id=APP_ID
+            )
+    indexer_client = indexer.IndexerClient('', 'https://testnet-algorand.api.purestake.io/idx2', {"X-API-Key": API_KEY})
+    box_names=app_client.get_box_names()
+    box_contents=[app_client.get_box_contents(name) for name in box_names]
+    previous_hashes = dict()
+    for i,val in enumerate(box_names):
+        print(type(box_contents[i].decode('utf-8')))
+        previous_hashes[val.decode('utf-8')]=json.loads(box_contents[i].decode('utf-8').replace('\'','"'))
+    return render_template("explorer.html",last_one_day_count=last_one_day_count,last_twenty_eight_days_count=last_twenty_eight_days_count
+                           ,one_day_avg=one_day_avg,month_avg=month_avg,latest_readings=latest_readings,previous_hashes=previous_hashes)
 
 @views.route("/send_hash",methods=['GET'])
 def send_hash():
-    if(is_time_between(time(23,49), time(23,59))):
+    if(is_time_between(time(23,49), time(23,59)) or True):
         con = mysql.connector.connect(
             host=db_host , user=db_user, password=db_password, database=db_name
         )
@@ -79,7 +133,7 @@ def send_hash():
             acct=sandbox.SandboxAccount(address=os,private_key=mnemonic.to_private_key(MNEMONIC))
             algod_client = algod.AlgodClient('', 'https://testnet-algorand.api.purestake.io/ps2', {"X-API-Key": API_KEY})
             app_client = client.ApplicationClient(
-                algod_client, contract.app, signer=acct.signer,app_id=433509059
+                algod_client, contract.app, signer=acct.signer,app_id=APP_ID
             )
             global_state=app_client.get_global_state()
             lastHash = global_state['lastHash']
@@ -98,13 +152,13 @@ def send_hash():
                 boxes=[(app_client.app_id,today)]
                 res = app_client.call(contract.add_dayhash,boxes=boxes,date=today,hash=overall_hash,cid=cid)
                 if(res.return_value=="Updated Hash Successfully.!!"):
-                    return jsonify({"statusCode":200,"msg":"success"})
+                    return jsonify({"statusCode":200,"msg":"Success, Hash Generated & Uploaded For {}.<br>Click Following Links For <a target='_blank' style='color:#01FE43;' href='https://testnet.algoexplorer.io/tx/{}'>Txn</a> & <a style='color:#01FE43;' target='_blank' href='https://ipfs.io/ipfs/{}'>Data Hashes</a>".format(datetime.today().strftime("%b %dth, %Y"),res.tx_id,cid)})
                 else:
-                    return jsonify({"statusCode":400,"msg":"Hash Already Updated.!!"})
+                    return jsonify({"statusCode":400,"msg":"Hash Already Updated For {}.".format(datetime.today().strftime("%b %dth, %Y"))})
             else:
-                return jsonify({"statusCode":500,"msg":"Pinning Hashes To IPFS Failed",'r':pin_res})
+                return jsonify({"statusCode":500,"msg":"Pinning Hashes To IPFS Failed.",'r':pin_res})
         else:
-            return jsonify({"statusCode":202,"msg":"No Entries Available To Update Hash"})
+            return jsonify({"statusCode":202,"msg":"No Entries Available Today To Generate Hash."})
     else:
         return jsonify({"statusCode":400,"msg":"This API is accessible from 23:49 PM to 23:59 PM."})
 
@@ -560,9 +614,4 @@ def process_form():
         )
 
 
-# Explorer
 
-
-@views.route("/explorer", methods=["GET", "POST"])
-def explorer():
-    return render_template("explorer.html")
