@@ -251,10 +251,28 @@ footer .footer{
     color: black;
 }
 
-#html5-qrcode-button-camera-start{
+#html5-qrcode-button-camera-start, #html5-qrcode-button-camera-stop{
     padding: 10px 20px!important;
-    
+    border: 1px solid #000 !important;
+    margin-block: 10px !important;
 }
+
+#html5-qrcode-button-camera-start:hover, #html5-qrcode-button-camera-stop:hover{
+    background-color: #000!important;
+    color: #01fe34 !important;
+    cursor: pointer !important;
+}
+
+#reader{
+    border: 1px solid #000 !important;
+    border-radius: 6px !important;
+}
+
+/*#qr-shaded-region{
+    border: 1px solid #000 !important;
+    border-radius: 6px !important;
+    margin: 10px !important;
+}*/
 
 @media screen and (width <= 500px) {
 
