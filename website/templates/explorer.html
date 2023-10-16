@@ -325,93 +325,95 @@
           </tbody>
         </table>
       </div>
-      <div class="updated-locations">
-        <h5>Latest Meter Readings</h5>
-        <hr />
-        <style>
-          .dataTables_wrapper{
-            margin-top:25px;
-            z-index:0;
-          }
-          td,th{
-            border:1px solid;
-          }
-          #latest_readings{
-            padding-top:12px;
-          }
-        </style>
-        <table id="latest_readings">
-          <thead>
-            <th>S.No</th>
-            <th>Username</th>
-            <th>Timestamp</th>
-            <th>Reading</th>
-            <th>Actions</th>
-          </thead>
-          <tbody>
-            {% for row in latest_readings %}
-    <tr>
-        <td>{{ loop.index }}</td>
-        <td>{{ row['username'] }}</td>
-        <td>{{ convertDate(row['timestamp']) }}</td>
-        <td>{{ row['meter_reading'] }}</td>
-        <td><a target='_blank' style="color:#01FE43;" href="{{BASE_URL}}view_mimage?date={{row['date']}}&username={{row['username']}}">View Image</a></td>
-    </tr>
-    {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <script>
-      $(document).ready( function () {
-  $('#latest_readings').DataTable({
-      columnDefs: [{ orderable: false, targets: 4 }],
+        <div class="updated-locations">
+          <h5>Latest Meter Readings</h5>
+          <hr />
+          <style>
+            .dataTables_wrapper{
+              margin-top:25px;
+              z-index:0;
+            }
+            td,th{
+              border:1px solid;
+            }
+            #latest_readings{
+              padding-top:12px;
+            }
+          </style>
+          <div class="table-responsive">
+            <table id="latest_readings">
+              <thead>
+                <th>S.No</th>
+                <th>Username</th>
+                <th>Timestamp</th>
+                <th>Reading</th>
+                <th>Actions</th>
+              </thead>
+              <tbody>
+                {% for row in latest_readings %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ row['username'] }}</td>
+            <td>{{ convertDate(row['timestamp']) }}</td>
+            <td>{{ row['meter_reading'] }}</td>
+            <td><a target='_blank' style="color:#01FE43;" href="{{BASE_URL}}view_mimage?date={{row['date']}}&username={{row['username']}}">View Image</a></td>
+        </tr>
+        {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        </div>
+        
+      <script>
+        $(document).ready( function () {
+    $('#latest_readings').DataTable({
+        columnDefs: [{ orderable: false, targets: 4 }],
+        order: [[0, "asc"]]
+    });
+    $('#previous_hashes').DataTable({
+      columnDefs: [{ orderable: false, targets: 2 }],
       order: [[0, "asc"]]
   });
-  $('#previous_hashes').DataTable({
-    columnDefs: [{ orderable: false, targets: 2 }],
-    order: [[0, "asc"]]
-});
-} );
-  </script>
-    <!-- modal-->
-    <div
-      class="modal fade"
-      id="qrmodal"
-      data-bs-backdrop="static"
-      data-bs-keyboard="false"
-      tabindex="-1"
-      aria-labelledby="staticBackdropLabel"
-      aria-hidden="true"
-    >
+  } );
+    </script>
+      <!-- modal-->
       <div
-        class="modal-dialog modal-fullscreen modal-dialog-centered modal-dialog-scrollable"
+        class="modal fade"
+        id="qrmodal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
       >
-        <div class="modal-content" style="background-color: #000">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Scan QR</h1>
-            <button
-              type="button btn btn-light"
-              id="qrclose"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <div style="margin:auto;" id="reader"></div>
-          </div>
+        <div
+          class="modal-dialog modal-fullscreen modal-dialog-centered modal-dialog-scrollable"
+        >
+          <div class="modal-content" style="background-color: #000">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Scan QR</h1>
+              <button
+                type="button btn btn-light"
+                id="qrclose"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div style="margin:auto;" id="reader"></div>
+            </div>
         </div>
       </div>
     </div>
 
     <footer>
       <div class="footer">
-        All Rights Reserved - BioCredit<i
+        All Rights Reserved - &copy;&nbsp; BioCredit<i
           class="fa-solid fa-leaf fa-sm"
           style="color: #00fe43"
         ></i>
-        &copy;
       </div>
     </footer>
     <!--  QR code starts -->
