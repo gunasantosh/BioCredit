@@ -251,6 +251,11 @@ footer .footer{
     color: black;
 }
 
+#html5-qrcode-button-camera-start{
+    padding: 10px 20px!important;
+    
+}
+
 @media screen and (width <= 500px) {
 
     .menu{
