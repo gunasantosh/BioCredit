@@ -126,7 +126,7 @@ def explorer():
 
 @views.route("/send_hash",methods=['GET'])
 def send_hash():
-    if(is_time_between(time(23,49), time(23,59)) or True):
+    if(is_time_between(time(23,49), time(23,59))):
         con = mysql.connector.connect(
             host=db_host , user=db_user, password=db_password, database=db_name
         )
