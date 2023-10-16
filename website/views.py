@@ -90,7 +90,10 @@ def explorer():
     for row in one_day_avg_res:
         total+=row['NumberOfRecords']
         counter+=1
-    one_day_avg=round(total/counter,2)
+    if(counter==0):
+        one_day_avg=0
+    else:
+        one_day_avg=round(total/counter,2)
     month_avg_q = "SELECT EXTRACT(MONTH FROM date) AS Month, COUNT(*) AS NumberOfRecords FROM readings GROUP BY EXTRACT(MONTH FROM date)"
     cursor.execute(month_avg_q)
     month_avg_res = cursor.fetchall()
@@ -99,7 +102,10 @@ def explorer():
     for row in month_avg_res:
         total+=row['NumberOfRecords']
         counter+=1
-    month_avg = round(total/counter,2)
+    if(counter==0):
+        month_avg=0
+    else:
+        month_avg = round(total/counter,2)
     latest_q="SELECT * FROM readings ORDER BY date DESC LIMIT 10"
     cursor.execute(latest_q)
     latest_readings=cursor.fetchall()
