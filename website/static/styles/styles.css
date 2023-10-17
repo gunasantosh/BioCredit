@@ -425,10 +425,31 @@ b[role='presentation']{
     background: linear-gradient(200deg,#01FE43,#333333);
 }
 
-div.content {
+.content {
     background-color: #01FE43;
-    margin-left: 200px;
+    margin-left: 250px;
     padding: 1px 16px;
+}
+
+#example_wrapper{
+    border: 1px solid #000;
+    border-radius: 6px;
+    background-color: #000;
+    color: #01fe34;
+    padding: 20px;
+}
+
+#example_wrapper input, select{
+    border: 1px solid #01fe34!important;
+    margin-inline: 10px !important;
+}
+
+#example{
+    padding: 20px;
+}
+
+#example th,td{
+    border: 1px solid #01fe34;
 }
 
 .hamburger-menu{
@@ -523,6 +544,7 @@ div.content {
         height: auto;
         position: relative;
     }
+    
     .sidebar a{float: left;}
     div.content{margin-left: 0;}
 
@@ -530,19 +552,21 @@ div.content {
         display: flex;
     }
 
-        .menu{
-            display: none;
-        }
-        .register{
-            display: none;
-        }
-        .hamburger-menu{
-            display: block;
-        }
+    .menu{
+        display: none;
+    }
 
-        .web-head{
-            margin-top: 80px !important;
-        }
+    .register{
+        display: none;
+    }
+
+    .hamburger-menu{
+        display: block;
+    }
+
+    .web-head{
+        margin-top: 80px !important;
+    }
 
 }
 
