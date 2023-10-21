@@ -581,8 +581,8 @@ def process_form():
     if distance <= (float(accuracy) + float(user_accuracy) + 200):
         today = datetime.now(tz).strftime("%Y-%m-%d")
         try:
-            query = "INSERT INTO readings (meter_reading,date, image, username,submitted_by) VALUES ('{}','{}','{}','{}','{}')".format(
-                meter_reading, today, image, username, current_user.id
+            query = "INSERT INTO readings (meter_reading,date, image, username,submitted_by,timestamp) VALUES ('{}','{}','{}','{}','{}','{}')".format(
+                meter_reading, today, image, username, current_user.id,datetime.now(tz)
             )
             cursor.execute(query)
             con.commit()
