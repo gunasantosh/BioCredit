@@ -582,7 +582,7 @@ def process_form():
         today = datetime.now(tz).strftime("%Y-%m-%d")
         try:
             query = "INSERT INTO readings (meter_reading,date, image, username,submitted_by,timestamp) VALUES ('{}','{}','{}','{}','{}','{}')".format(
-                meter_reading, today, image, username, current_user.id,datetime.now(tz)
+                meter_reading, today, image, username, current_user.id,datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
             )
             cursor.execute(query)
             con.commit()
