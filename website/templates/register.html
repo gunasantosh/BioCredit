@@ -13,15 +13,15 @@ endblock %} {% block content%}
     <h2>Registration</h2>
     <form id="reg-form" method="POST">
       <div class="user-box">
-        <input type="text" name="username" required="" autocomplete="off" />
+        <input type="text" name="username" required="" {% if username %} value="{{username}}" {% endif %} autocomplete="off" />
         <label>Username :</label>
       </div>
       <div class="user-box">
-        <input type="text" name="name" required="" autocomplete="off" />
+        <input type="text" name="name" required="" {% if name %} value="{{name}}" {% endif %} autocomplete="off" />
         <label>Name :</label>
       </div>
       <div class="user-box">
-        <input type="text" name="address" required="" autocomplete="off" />
+        <input type="text" name="address" required="" {% if address %} value="{{address}}" {% endif %} autocomplete="off" />
         <label>Address :</label>
       </div>
       <input type="hidden" id="lat" name="latitude" required />
@@ -30,11 +30,11 @@ endblock %} {% block content%}
 
       <input type="hidden" id="user_role" name="user_role" />
       <div class="user-box">
-        <input type="password" name="password1" required="" />
+        <input type="password" name="password1" {% if password1 %} value="{{password1}}" {% endif %} required="" />
         <label>Password :</label>
       </div>
       <div class="user-box">
-        <input type="password" name="password2" required="" />
+        <input type="password" name="password2" {% if password2 %} value="{{password2}}" {% endif %} required="" />
         <label>Confirm Password :</label>
       </div>
       <span id="status" data-status style="display: none"></span>

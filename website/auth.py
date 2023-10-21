@@ -24,14 +24,29 @@ def register():
 
         if existing_user:
             flash("Username already exists. Please choose a different username.", category="error")
-        elif username and len(username.strip()) >= 4 and password1 and len(password1) >= 7 and password1 == password2 and username.isalnum():
+        elif username and len(username.strip()) >= 4 and password1 and password2 and len(password1) >= 8 and password1 == password2 and username.isalnum():
             user = User(username=username, name=name, address=address, latitude=latitude, longitude=longitude,accuracy=accuracy,role=role,password=generate_password_hash(password1, method='sha256') )  
             db.session.add(user)
             db.session.commit()
             flash("Account created successfully!", category="success")
-            return redirect(url_for('views.dashboard'))
+            return redirect(url_for('auth.login'))
         else:
-            return render_template('register.html')
+            if(not username):
+                flash("Please enter Username to Register.", category="error")
+            elif(not len(username.strip()) >= 4):
+                flash("Username must be Greater than 4 Characters.", category="error")
+            elif(not password1 or not password2):
+                flash("Please enter Password to Register.", category="error")
+            elif(not len(password1) >= 8):
+                flash("Password must be Greater than 7 Characters.", category="error")
+            elif(not password1 == password2):
+                flash("Both Passwords must be Same.", category="error")
+            elif(not username.isalnum()):
+                flash("Username must only Contain AlphaNumeric Characters.", category="error")
+            else:
+                flash("Something Went Wrong.", category="error")
+            
+            return render_template('register.html',username=username,password1=password1,password2=password2,name=name,address=address)
 
     return render_template("register.html")
 

@@ -5,6 +5,7 @@ from .models import User
 import mysql.connector
 from mysql.connector import errors
 from datetime import datetime,time,timedelta
+from pytz import timezone
 from geopy.distance import geodesic
 import segno
 from cryptography.fernet import Fernet
@@ -23,6 +24,8 @@ MNEMONIC=os.getenv('MNEMONIC')
 PINATA_KEY=os.getenv('PINATA_KEY')
 PINATA_SECRET_KEY=os.getenv('PINATA_SECRET_KEY')
 APP_ID=433686116
+
+tz=timezone('Asia/Kolkata')
 
 
 views = Blueprint("views", __name__)
@@ -56,7 +59,7 @@ def pin_json(json_):
 
 def is_time_between(start_time, end_time, check_time=None):
     # If check time is not given, default to current time
-    check_time = check_time or datetime.now().time()
+    check_time = check_time or datetime.now(tz).time()
     if start_time < end_time:
         return start_time <= check_time <= end_time
     else:  # crosses midnight
@@ -66,7 +69,7 @@ def is_time_between(start_time, end_time, check_time=None):
 # Explorer
 @views.route("/explorer", methods=["GET", "POST"])
 def explorer():
-    now = datetime.now()
+    now = datetime.now(tz)
     one_day_ago = now - timedelta(days=1)
     twenty_eight_days_ago = now - timedelta(days=28)
     con = mysql.connector.connect(
@@ -131,7 +134,7 @@ def send_hash():
             host=db_host , user=db_user, password=db_password, database=db_name
         )
         cursor = con.cursor(buffered=False, dictionary=True)
-        today=datetime.today().strftime("%Y-%m-%d")
+        today=datetime.now(tz).strftime("%Y-%m-%d")
         q="SELECT * FROM readings WHERE date='{}' ORDER BY timestamp ASC".format(today)
         cursor.execute(q)
         rows=cursor.fetchall()
@@ -158,9 +161,9 @@ def send_hash():
                 boxes=[(app_client.app_id,today)]
                 res = app_client.call(contract.add_dayhash,boxes=boxes,date=today,hash=overall_hash,cid=cid)
                 if(res.return_value=="Updated Hash Successfully.!!"):
-                    return jsonify({"statusCode":200,"msg":"Success, Hash Generated & Uploaded For {}.<br>Click Following Links For <a target='_blank' style='color:#01FE43;' href='https://testnet.algoexplorer.io/tx/{}'>Txn</a> & <a style='color:#01FE43;' target='_blank' href='https://ipfs.io/ipfs/{}'>Data Hashes</a>".format(datetime.today().strftime("%b %dth, %Y"),res.tx_id,cid)})
+                    return jsonify({"statusCode":200,"msg":"Success, Hash Generated & Uploaded For {}.<br>Click Following Links For <a target='_blank' style='color:#01FE43;' href='https://testnet.algoexplorer.io/tx/{}'>Txn</a> & <a style='color:#01FE43;' target='_blank' href='https://ipfs.io/ipfs/{}'>Data Hashes</a>".format(datetime.now(tz).strftime("%b %dth, %Y"),res.tx_id,cid)})
                 else:
-                    return jsonify({"statusCode":400,"msg":"Hash Already Updated For {}.".format(datetime.today().strftime("%b %dth, %Y"))})
+                    return jsonify({"statusCode":400,"msg":"Hash Already Updated For {}.".format(datetime.now(tz).strftime("%b %dth, %Y"))})
             else:
                 return jsonify({"statusCode":500,"msg":"Pinning Hashes To IPFS Failed.",'r':pin_res})
         else:
@@ -238,7 +241,7 @@ def capture_readings():
     role = current_user.role
     user_list = None
     flag = True
-    today = datetime.today().strftime("%Y-%m-%d")
+    today = datetime.now(tz).strftime("%Y-%m-%d")
     if role == "superuser":
         q = "SELECT * FROM user WHERE role='user' AND 0 IN (SELECT COUNT(*) FROM readings WHERE readings.username=user.username AND timestamp>='{} 00:00:00' AND timestamp<='{} 23:59:59')".format(
             today, today
@@ -590,7 +593,7 @@ def process_form():
 
     distance = geodesic(current_location, user_location).m
     if distance <= (float(accuracy) + float(user_accuracy) + 200):
-        today = datetime.today().strftime("%Y-%m-%d")
+        today = datetime.now(tz).strftime("%Y-%m-%d")
         try:
             query = "INSERT INTO readings (meter_reading,date, image, username,submitted_by) VALUES ('{}','{}','{}','{}','{}')".format(
                 meter_reading, today, image, username, current_user.id

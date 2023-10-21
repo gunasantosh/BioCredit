@@ -451,7 +451,11 @@ footer .footer{
 
 /* datatables */
 td a{
-    color: #212529;
+    color: #01FE43;
+}
+
+.dataTables_wrapper{
+    overflow-x: auto;
 }
 
 /* qr modal */
