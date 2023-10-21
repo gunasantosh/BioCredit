@@ -23,7 +23,7 @@ PUBLIC_KEY=os.getenv('PUBLIC_KEY')
 MNEMONIC=os.getenv('MNEMONIC')
 PINATA_KEY=os.getenv('PINATA_KEY')
 PINATA_SECRET_KEY=os.getenv('PINATA_SECRET_KEY')
-APP_ID=433686116
+APP_ID=os.getenv('APP_ID')
 
 tz=timezone('Asia/Kolkata')
 
@@ -544,20 +544,6 @@ def userReadings():
     finally:
         cursor.close()
         con.close()
-
-
-# @views.route('/save', methods=['POST'])
-# def save():
-#     image_data = request.json.get('image_data')
-#     if image_data:
-
-#         query = "INSERT INTO captured_image (image) VALUES ('{}')".format(image_data)
-#         cursor.execute(query)
-#         con.commit()
-#         return jsonify({'status': 'success'})
-#     else:
-#         return jsonify({'status': 'error'})
-
 
 @views.route("/process_form", methods=["POST"])
 @login_required
