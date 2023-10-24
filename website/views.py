@@ -23,7 +23,7 @@ PUBLIC_KEY=os.getenv('PUBLIC_KEY')
 MNEMONIC=os.getenv('MNEMONIC')
 PINATA_KEY=os.getenv('PINATA_KEY')
 PINATA_SECRET_KEY=os.getenv('PINATA_SECRET_KEY')
-APP_ID=os.getenv('APP_ID')
+APP_ID=int(os.getenv('APP_ID'))
 
 tz=timezone('Asia/Kolkata')
 
